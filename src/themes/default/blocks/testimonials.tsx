@@ -50,8 +50,6 @@ export function Testimonials({
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  {/* Online indicator */}
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-slate-800"></div>
                 </div>
                 <div className="flex-1">
                   <h4 className="text-gray-900 dark:text-white font-semibold text-lg">
