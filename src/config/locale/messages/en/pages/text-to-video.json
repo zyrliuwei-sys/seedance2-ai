@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "Text to Video - Wan Ai AI Video Generator",
+    "description": "Generate stunning videos from text prompts using Wan 2.6 AI technology on Wan Ai platform."
+  },
+  "page": {
+    "title": "Text to Video",
+    "description": "Transform your ideas into videos with AI. Simply describe what you want to see, and Wan 2.6 will create it for you.",
+    "keywords": ["text to video", "AI video generator", "Wan 2.6", "video generation"]
+  },
+  "hero": {
+    "title": "Create Videos from Text",
+    "description": "Describe your vision and let Wan 2.6 AI bring it to life. Generate stunning videos from simple text prompts.",
+    "cta": "Start Creating"
+  },
+  "features": {
+    "title": "Why Choose Text to Video",
+    "items": [
+      {
+        "title": "Simple to Use",
+        "description": "Just type what you want to see and our AI does the rest. No video editing skills required."
+      },
+      {
+        "title": "Wan 2.6 Technology",
+        "description": "Powered by the latest Wan 2.6 AI model for superior video generation quality."
+      },
+      {
+        "title": "Fast Generation",
+        "description": "Get your videos in minutes, not hours. Our optimized pipeline ensures quick results."
+      },
+      {
+        "title": "High Quality Output",
+        "description": "Generate videos in stunning resolution with smooth motion and realistic details."
+      }
+    ]
+  },
+  "generator": {
+    "title": "Generate Your Video",
+    "prompt_label": "Describe Your Video",
+    "prompt_placeholder": "A serene sunset over the ocean, with waves gently crashing on the shore...",
+    "duration_label": "Duration",
+    "aspect_ratio_label": "Aspect Ratio",
+    "style_label": "Style",
+    "generate_button": "Generate Video",
+    "generating": "Generating your video...",
+    "examples": {
+      "title": "Example Prompts",
+      "items": [
+        "A cinematic drone shot of a futuristic city at night with neon lights",
+        "A peaceful forest scene with sunlight filtering through the trees",
+        "An astronaut floating in space with Earth in the background"
+      ]
+    }
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "description": "Pay only for what you use. No hidden fees."
+  }
+}

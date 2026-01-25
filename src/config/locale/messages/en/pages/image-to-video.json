@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "title": "Image to Video - Wan Ai AI Video Generator",
+    "description": "Animate your images into videos using Wan 2.6 AI technology on Wan Ai platform."
+  },
+  "page": {
+    "title": "Image to Video",
+    "description": "Bring your images to life with AI. Upload any image and watch it transform into a dynamic video.",
+    "keywords": ["image to video", "AI video generator", "Wan 2.6", "animate image", "video animation"]
+  },
+  "hero": {
+    "title": "Animate Images to Videos",
+    "description": "Upload an image and let Wan 2.6 AI transform it into a stunning animated video. Perfect for bringing static photos to life.",
+    "cta": "Start Animating"
+  },
+  "features": {
+    "title": "Why Choose Image to Video",
+    "items": [
+      {
+        "title": "Easy Upload",
+        "description": "Simply upload any image and our AI will animate it. Supports JPG, PNG, and WebP formats."
+      },
+      {
+        "title": "Smart Animation",
+        "description": "Wan 2.6 intelligently analyzes your image and creates natural, realistic motion."
+      },
+      {
+        "title": "Multiple Styles",
+        "description": "Choose from various animation styles - zoom, pan, rotate, and more."
+      },
+      {
+        "title": "Preserve Quality",
+        "description": "Maintains image quality while adding smooth, professional motion effects."
+      }
+    ]
+  },
+  "generator": {
+    "title": "Animate Your Image",
+    "upload_label": "Upload Your Image",
+    "upload_placeholder": "Drag and drop or click to upload",
+    "prompt_label": "Motion Description (Optional)",
+    "prompt_placeholder": "Describe how you want the image to move...",
+    "duration_label": "Duration",
+    "motion_intensity_label": "Motion Intensity",
+    "style_label": "Animation Style",
+    "generate_button": "Generate Video",
+    "generating": "Animating your image...",
+    "examples": {
+      "title": "Tips for Best Results",
+      "items": [
+        "Use high-resolution images for better quality output",
+        "Images with clear subjects work best",
+        "Try different motion intensities for varied effects",
+        "Describe specific movements in the prompt for more control"
+      ]
+    }
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "description": "Pay only for what you use. No hidden fees."
+  }
+}

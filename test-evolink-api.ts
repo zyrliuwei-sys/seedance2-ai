@@ -4,17 +4,15 @@
  */
 
 async function testEvolinkAPI() {
-  const evolinkAPI = await import('@/extensions/ai/evolink');
+  const { evolinkAPI } = await import('@/extensions/ai/evolink');
 
   console.log('===== Testing Evolink API Configuration =====');
-  console.log('API Key:', evolinkAPI.apiKey ? 'Set' : 'Not set');
-  console.log('Base URL:', evolinkAPI.baseURL);
+  console.log('API Available:', evolinkAPI ? 'Yes' : 'No');
 
   try {
-    // Test create video generation
-    console.log('\n--- Testing createVideoGeneration ---');
-    const createResult = await evolinkAPI.createVideoGeneration({
-      model: 'wan2.6-text-to-video',
+    // Test text to video
+    console.log('\n--- Testing textToVideo ---');
+    const createResult = await evolinkAPI.textToVideo({
       prompt: 'Test prompt for video generation',
       aspectRatio: '16:9',
       quality: '720p',
@@ -37,18 +35,12 @@ async function testEvolinkAPI() {
     return {
       success: true,
       message: 'Evolink API test completed successfully',
-      config: {
-        apiKey: evolinkAPI.apiKey ? 'Set' : 'Not set',
-        baseURL: evolinkAPI.baseURL,
-        hasApiKey: !!evolinkAPI.apiKey,
-        hasBaseURL: !!evolinkAPI.baseURL,
-      }
     };
-  } catch (error) {
+  } catch (error: any) {
     return {
       success: false,
       message: 'Evolink API test failed',
-      error: error.message
+      error: error?.message || 'Unknown error'
     };
   }
 }

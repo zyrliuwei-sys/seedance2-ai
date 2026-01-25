@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "文字生成视频 - Wan Ai AI视频生成器",
+    "description": "在Wan Ai平台上使用Wan 2.6 AI技术，通过文字描述生成精美视频。"
+  },
+  "page": {
+    "title": "文字生成视频",
+    "description": "用AI将您的想法转化为视频。只需描述您想看到的内容，Wan 2.6就会为您创建。",
+    "keywords": ["文字生成视频", "AI视频生成器", "Wan 2.6", "视频生成"]
+  },
+  "hero": {
+    "title": "文字生成视频",
+    "description": "描述您的愿景，让Wan 2.6 AI为您实现。从简单的文字描述生成精美的视频。",
+    "cta": "开始创作"
+  },
+  "features": {
+    "title": "为什么选择文字生成视频",
+    "items": [
+      {
+        "title": "简单易用",
+        "description": "只需输入您想看到的内容，AI会完成剩下的工作。无需视频编辑技能。"
+      },
+      {
+        "title": "Wan 2.6 技术",
+        "description": "采用最新的Wan 2.6 AI模型，提供卓越的视频生成质量。"
+      },
+      {
+        "title": "快速生成",
+        "description": "几分钟内即可获得您的视频，而非几小时。优化的流程确保快速出结果。"
+      },
+      {
+        "title": "高质量输出",
+        "description": "生成高分辨率视频，具有流畅的动作和逼真的细节。"
+      }
+    ]
+  },
+  "generator": {
+    "title": "生成您的视频",
+    "prompt_label": "描述您的视频",
+    "prompt_placeholder": "宁静的日落海景，海浪轻柔地拍打着海岸...",
+    "duration_label": "时长",
+    "aspect_ratio_label": "宽高比",
+    "style_label": "风格",
+    "generate_button": "生成视频",
+    "generating": "正在生成您的视频...",
+    "examples": {
+      "title": "示例提示词",
+      "items": [
+        "电影级无人机镜头，展示夜晚的未来城市，霓虹灯闪烁",
+        "宁静的森林场景，阳光透过树叶洒下",
+        "宇航员在太空中漂浮，背景是地球"
+      ]
+    }
+  },
+  "pricing": {
+    "title": "简单透明的定价",
+    "description": "按使用付费，无隐藏费用。"
+  }
+}

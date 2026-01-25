@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "title": "图片生成视频 - Wan Ai AI视频生成器",
+    "description": "在Wan Ai平台上使用Wan 2.6 AI技术，将图片转化为动态视频。"
+  },
+  "page": {
+    "title": "图片生成视频",
+    "description": "用AI让您的图片动起来。上传任何图片，观看它转化为动态视频。",
+    "keywords": ["图片生成视频", "AI视频生成器", "Wan 2.6", "图片动画", "视频动画"]
+  },
+  "hero": {
+    "title": "图片转化为视频",
+    "description": "上传图片，让Wan 2.6 AI将其转化为精美的动态视频。非常适合让静态照片焕发生机。",
+    "cta": "开始制作"
+  },
+  "features": {
+    "title": "为什么选择图片生成视频",
+    "items": [
+      {
+        "title": "简单上传",
+        "description": "只需上传任何图片，AI就会为其添加动画。支持JPG、PNG和WebP格式。"
+      },
+      {
+        "title": "智能动画",
+        "description": "Wan 2.6智能分析您的图片，创建自然、逼真的运动效果。"
+      },
+      {
+        "title": "多种风格",
+        "description": "选择各种动画风格 - 缩放、平移、旋转等。"
+      },
+      {
+        "title": "保持质量",
+        "description": "在添加流畅、专业的运动效果的同时保持图片质量。"
+      }
+    ]
+  },
+  "generator": {
+    "title": "让您的图片动起来",
+    "upload_label": "上传您的图片",
+    "upload_placeholder": "拖放或点击上传",
+    "prompt_label": "运动描述（可选）",
+    "prompt_placeholder": "描述您希望图片如何移动...",
+    "duration_label": "时长",
+    "motion_intensity_label": "运动强度",
+    "style_label": "动画风格",
+    "generate_button": "生成视频",
+    "generating": "正在为您的图片添加动画...",
+    "examples": {
+      "title": "获得最佳效果的技巧",
+      "items": [
+        "使用高分辨率图片以获得更好的输出质量",
+        "主体清晰的图片效果最佳",
+        "尝试不同的运动强度以获得不同的效果",
+        "在提示词中描述具体的运动以获得更多控制"
+      ]
+    }
+  },
+  "pricing": {
+    "title": "简单透明的定价",
+    "description": "按使用付费，无隐藏费用。"
+  }
+}

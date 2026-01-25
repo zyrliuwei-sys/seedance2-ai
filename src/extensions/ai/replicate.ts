@@ -301,3 +301,72 @@ export class ReplicateProvider implements AIProvider {
     return input;
   }
 }
+
+// Replicate API singleton for video generation
+class ReplicateAPI {
+  private getProvider() {
+    const apiToken = process.env.REPLICATE_API_TOKEN;
+    if (!apiToken) {
+      throw new Error('REPLICATE_API_TOKEN is not set');
+    }
+    return new ReplicateProvider({
+      apiToken,
+      customStorage: false,
+    });
+  }
+
+  async textToVideo(params: {
+    prompt: string;
+    duration?: number;
+  }) {
+    const provider = this.getProvider();
+    return provider.generate({
+      params: {
+        mediaType: 'video' as any,
+        model: 'minimaxai/video-01',
+        prompt: params.prompt,
+        options: {
+          duration: params.duration || 5,
+        },
+      },
+    });
+  }
+
+  async imageToVideo(params: {
+    prompt: string;
+    imageUrl: string;
+    duration?: number;
+  }) {
+    const provider = this.getProvider();
+    return provider.generate({
+      params: {
+        mediaType: 'video' as any,
+        model: 'minimaxai/video-01',
+        prompt: params.prompt,
+        options: {
+          image_input: [params.imageUrl],
+          duration: params.duration || 5,
+        },
+      },
+    });
+  }
+
+  async getPredictionStatus(taskId: string) {
+    const provider = this.getProvider();
+    const result = await provider.query({
+      taskId,
+      mediaType: 'video' as any,
+    });
+
+    // Transform to match expected format
+    return {
+      id: result.taskId,
+      status: result.taskStatus,
+      progress: result.taskInfo?.status === 'processing' ? 0.5 : 1,
+      output: result.taskResult?.output,
+      error: result.taskInfo?.errorMessage,
+    };
+  }
+}
+
+export const replicateAPI = new ReplicateAPI();
