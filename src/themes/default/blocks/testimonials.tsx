@@ -17,7 +17,7 @@ export function Testimonials({
       <ScrollAnimation delay={index * 0.1}>
         <div className="group relative h-full">
           {/* Card background with glass effect */}
-          <div className="bg-white/80 dark:bg-slate-800/80 relative h-full rounded-3xl border border-gray-200/50 dark:border-gray-700/50 p-8 shadow-lg backdrop-blur-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+          <div className="bg-white/80 dark:bg-slate-800/80 relative h-full rounded-2xl border border-gray-200/50 dark:border-gray-700/50 p-6 shadow-lg backdrop-blur-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
             {/* Decorative gradient border */}
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div className="w-full h-full rounded-3xl bg-white/95 dark:bg-slate-800/95"></div>
@@ -42,15 +42,6 @@ export function Testimonials({
 
               {/* User info */}
               <div className="flex items-center gap-4">
-                <div className="relative">
-                  <div className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
-                    <LazyImage
-                      src={item.image?.src || item.avatar?.src || ''}
-                      alt={item.image?.alt || item.avatar?.alt || item.name || ''}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
                 <div className="flex-1">
                   <h4 className="text-gray-900 dark:text-white font-semibold text-lg">
                     {item.name}
@@ -79,7 +70,7 @@ export function Testimonials({
     <section
       id={section.id}
       className={cn(
-        'relative overflow-hidden py-20 md:py-32 bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800',
+        'relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800',
         section.className,
         className
       )}
@@ -93,7 +84,7 @@ export function Testimonials({
 
       <div className="container relative px-4 sm:px-6 lg:px-8">
         <ScrollAnimation>
-          <div className="mx-auto max-w-4xl text-center text-balance mb-16">
+          <div className="mx-auto max-w-4xl text-center text-balance mb-10">
             <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-4 py-2 mb-6 border border-blue-200/20 dark:border-blue-800/20">
               <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-pulse"></div>
               <span className="text-sm font-medium text-blue-700 dark:text-blue-300">User Reviews</span>
@@ -116,7 +107,7 @@ export function Testimonials({
 
         {/* Bottom stats */}
         <ScrollAnimation delay={0.4}>
-          <div className="mt-20 text-center">
+          <div className="mt-12 text-center">
             <div className="inline-flex items-center gap-8 px-8 py-6 bg-white/80 dark:bg-slate-800/80 rounded-3xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-xl shadow-lg">
               <div className="text-center">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">10K+</div>

@@ -261,6 +261,7 @@ export function WanVideoGenerator({ open, onOpenChange }: VideoGeneratorProps) {
     handleReset,
     downloadVideo,
   } = useWanVideoGenerator();
+
   const proxiedVideoUrl = videoUrl
     ? `/api/proxy/file?url=${encodeURIComponent(videoUrl)}`
     : '';
@@ -742,7 +743,7 @@ export function WanVideoGeneratorInline({
             <div className="mt-4 aspect-video overflow-hidden rounded-xl border border-white/10 bg-black/30 relative">
               {videoUrl && taskStatus === 'completed' ? (
                 <video
-                  src={proxiedVideoUrl}
+                  src={videoUrl}
                   controls
                   crossOrigin="anonymous"
                   className="h-full w-full object-cover"

@@ -73,6 +73,19 @@ export async function POST(request: NextRequest) {
                 callbackUrl,
               });
 
+        if (result.status === 'failed' || result.status === 'cancelled') {
+          let failureDetail = '';
+          try {
+            const statusResult = await evolinkAPI.getTaskStatus(result.id);
+            const errorMessage =
+              statusResult.error?.message || statusResult.error?.code || '';
+            if (errorMessage) failureDetail = `: ${errorMessage}`;
+          } catch {
+            // Ignore status fetch failures; use a generic message.
+          }
+          throw new Error(`Evolink task failed on create${failureDetail}`);
+        }
+
         return NextResponse.json({
           success: true,
           provider: 'evolink',

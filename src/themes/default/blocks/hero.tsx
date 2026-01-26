@@ -27,7 +27,7 @@ export function Hero({
     <section
       id={section.id}
       className={cn(
-        'relative min-h-screen overflow-hidden bg-slate-950',
+        'relative min-h-screen overflow-hidden bg-slate-950 mt-16',
         className
       )}
     >

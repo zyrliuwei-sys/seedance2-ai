@@ -157,16 +157,13 @@ class EvolinkAPI {
       console.log('[Evolink API] API Key:', this.apiKey ? 'Set (hidden)' : 'Not set');
       console.log('[Evolink API] Base URL:', this.baseURL);
 
-      const response = await fetch(
-        `${this.baseURL}/videos/generations/${taskId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await fetch(`${this.baseURL}/tasks/${taskId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
       console.log('[Evolink API] Status response status:', response.status);
       console.log('[Evolink API] Status response headers:', Object.fromEntries(response.headers));
