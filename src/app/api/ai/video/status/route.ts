@@ -5,7 +5,9 @@ import { replicateAPI } from '@/extensions/ai/replicate';
 
 const extractVideoUrl = (value: any): string | null => {
   if (!value) return null;
-  if (typeof value === 'string') return value;
+  if (typeof value === 'string') {
+    return value.includes('http') ? value : null;
+  }
   if (typeof value !== 'object') return null;
 
   const candidate =
@@ -14,19 +16,93 @@ const extractVideoUrl = (value: any): string | null => {
     value.url ??
     value.uri ??
     value.video ??
-    value.src;
-  return typeof candidate === 'string' ? candidate : null;
+    value.src ??
+    value.file ??
+    value.download_url;
+  if (candidate && typeof candidate === 'string' && candidate.includes('http')) {
+    return candidate;
+  }
+  return null;
 };
 
-const normalizeReplicateOutput = (output: any) => {
-  if (!output) return null;
-  if (typeof output === 'string') return output;
-  if (Array.isArray(output)) {
-    for (const item of output) {
-      const url = extractVideoUrl(item);
+const findDeepVideoUrl = (value: any, visited = new Set<any>()): string | null => {
+  if (!value || visited.has(value)) return null;
+  if (typeof value === 'string') {
+    if (value.startsWith('http')) return value;
+    return null;
+  }
+  if (typeof value !== 'object') return null;
+
+  visited.add(value);
+
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const url = extractVideoUrl(item) || findDeepVideoUrl(item, visited);
       if (url) return url;
     }
     return null;
+  }
+
+  const direct = extractVideoUrl(value);
+  if (direct) return direct;
+
+  for (const val of Object.values(value)) {
+    const url = extractVideoUrl(val) || findDeepVideoUrl(val, visited);
+    if (url) return url;
+  }
+
+  return null;
+};
+
+const normalizeReplicateOutput = (output: any) => {
+  console.log('[normalizeReplicateOutput] Input:', JSON.stringify(output, null, 2));
+
+  if (!output) return null;
+  if (typeof output === 'string') {
+    if (output.includes('http')) {
+      console.log('[normalizeReplicateOutput] Direct string URL:', output);
+      return output;
+    }
+    return null;
+  }
+  if (Array.isArray(output)) {
+    console.log('[normalizeReplicateOutput] Output is array with', output.length, 'items');
+    for (const item of output) {
+      const url = extractVideoUrl(item);
+      if (url) {
+        console.log('[normalizeReplicateOutput] Found URL in array item:', url);
+        return url;
+      }
+      // Also check if item itself is a string URL
+      if (typeof item === 'string' && item.includes('http')) {
+        console.log('[normalizeReplicateOutput] Found direct string URL in array:', item);
+        return item;
+      }
+    }
+    // If array items are objects, try to get their first property value
+    for (const item of output) {
+      if (typeof item === 'object' && item !== null) {
+        const values = Object.values(item);
+        for (const val of values) {
+          if (typeof val === 'string' && val.includes('http')) {
+            console.log('[normalizeReplicateOutput] Found URL in object value:', val);
+            return val;
+          }
+        }
+      }
+    }
+    return null;
+  }
+  if (typeof output === 'object') {
+    console.log('[normalizeReplicateOutput] Output is object, keys:', Object.keys(output));
+    // Try to find URL in object values
+    const values = Object.values(output);
+    for (const val of values) {
+      if (typeof val === 'string' && val.includes('http')) {
+        console.log('[normalizeReplicateOutput] Found URL in object value:', val);
+        return val;
+      }
+    }
   }
   return extractVideoUrl(output);
 };
@@ -64,7 +140,8 @@ export async function GET(request: NextRequest) {
       const videoUrl =
         result.result?.video_url ||
         extractVideoUrl(result.result) ||
-        extractVideoUrl(result as any);
+        findDeepVideoUrl(result.result) ||
+        findDeepVideoUrl(result as any);
 
       return NextResponse.json({
         success: true,
@@ -83,7 +160,23 @@ export async function GET(request: NextRequest) {
 
     if (provider === 'replicate') {
       const result = await replicateAPI.getPredictionStatus(taskId);
-      const videoUrl = normalizeReplicateOutput(result.output);
+
+      console.log('[API /video/status] Replicate result:', {
+        id: result.id,
+        status: result.status,
+        progress: result.progress,
+        hasOutput: !!result.output,
+        outputType: typeof result.output,
+        output: result.output,
+        error: result.error,
+      });
+
+      const videoUrl =
+        normalizeReplicateOutput(result.output) ||
+        findDeepVideoUrl(result.output) ||
+        findDeepVideoUrl(result as any);
+
+      console.log('[API /video/status] Extracted videoUrl:', videoUrl);
 
       return NextResponse.json({
         success: true,

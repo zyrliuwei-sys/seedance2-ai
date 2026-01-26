@@ -107,27 +107,59 @@ export class ReplicateProvider implements AIProvider {
   }): Promise<AITaskResult> {
     const data = await this.client.predictions.get(taskId);
 
+    console.log('[ReplicateProvider] Raw prediction data:', JSON.stringify({
+      id: data.id,
+      status: data.status,
+      output: data.output,
+      outputType: typeof data.output,
+    }, null, 2));
+
     let images: AIImage[] | undefined = undefined;
     let videos: AIVideo[] | undefined = undefined;
 
     if (data.output) {
       if (mediaType === AIMediaType.VIDEO) {
         // handle video output
-        if (Array.isArray(data.output)) {
-          videos = data.output.map((video: any) => ({
+        const extractVideoUrl = (output: any): string | null => {
+          if (!output) return null;
+          if (typeof output === 'string') {
+            // Direct URL string
+            if (output.includes('http')) return output;
+            return null;
+          }
+          if (Array.isArray(output)) {
+            // Array of outputs
+            for (const item of output) {
+              if (typeof item === 'string' && item.includes('http')) return item;
+              if (typeof item === 'object' && item !== null) {
+                // Check common URL properties
+                const url = item.url ?? item.video_url ?? item.videoUrl ?? item.output;
+                if (url && typeof url === 'string' && url.includes('http')) return url;
+              }
+            }
+            return null;
+          }
+          if (typeof output === 'object' && output !== null) {
+            // Object output
+            const url = output.url ?? output.video_url ?? output.videoUrl ?? output.output;
+            if (url && typeof url === 'string' && url.includes('http')) return url;
+            // Check all string values that look like URLs
+            for (const val of Object.values(output)) {
+              if (typeof val === 'string' && val.includes('http')) return val;
+            }
+          }
+          return null;
+        };
+
+        const videoUrl = extractVideoUrl(data.output);
+        if (videoUrl) {
+          videos = [{
             id: '',
             createTime: new Date(data.created_at),
-            videoUrl: video,
-          }));
-        } else if (typeof data.output === 'string') {
-          videos = [
-            {
-              id: '',
-              createTime: new Date(data.created_at),
-              videoUrl: data.output,
-            },
-          ];
+            videoUrl,
+          }];
         }
+        console.log('[ReplicateProvider] Extracted video URL:', videoUrl);
       } else {
         // handle image output (default)
         if (Array.isArray(data.output)) {
@@ -317,16 +349,18 @@ class ReplicateAPI {
 
   async textToVideo(params: {
     prompt: string;
+    aspectRatio?: '16:9' | '9:16' | '1:1';
     duration?: number;
   }) {
     const provider = this.getProvider();
     return provider.generate({
       params: {
         mediaType: 'video' as any,
-        model: 'minimaxai/video-01',
+        model: 'wan-video/wan-2.5-t2v',
         prompt: params.prompt,
         options: {
-          duration: params.duration || 5,
+          aspect_ratio: params.aspectRatio || '16:9',
+          num_videos: 1,
         },
       },
     });
@@ -341,11 +375,10 @@ class ReplicateAPI {
     return provider.generate({
       params: {
         mediaType: 'video' as any,
-        model: 'minimaxai/video-01',
+        model: 'wan-video/wan-2.5-i2v',
         prompt: params.prompt,
         options: {
-          image_input: [params.imageUrl],
-          duration: params.duration || 5,
+          image: params.imageUrl,
         },
       },
     });

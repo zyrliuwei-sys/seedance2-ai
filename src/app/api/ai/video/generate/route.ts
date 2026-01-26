@@ -47,6 +47,34 @@ export async function POST(request: NextRequest) {
 
     const errors: string[] = [];
 
+    // Try Replicate first
+    if (process.env.REPLICATE_API_TOKEN) {
+      try {
+        const result =
+          type === 'text-to-video'
+            ? await replicateAPI.textToVideo({
+                prompt,
+                aspectRatio: aspectRatio as '16:9' | '9:16' | '1:1',
+                duration,
+              })
+            : await replicateAPI.imageToVideo({
+                prompt: prompt || 'Animate this image',
+                imageUrl,
+                duration,
+              });
+
+        return NextResponse.json({
+          success: true,
+          provider: 'replicate',
+          taskId: result.taskId,
+          status: result.taskStatus,
+        });
+      } catch (error) {
+        errors.push(`replicate: ${buildErrorMessage(error)}`);
+      }
+    }
+
+    // Fallback to Evolink
     if (process.env.EVOLINK_API_KEY) {
       try {
         const result =
@@ -96,31 +124,6 @@ export async function POST(request: NextRequest) {
         });
       } catch (error) {
         errors.push(`evolink: ${buildErrorMessage(error)}`);
-      }
-    }
-
-    if (process.env.REPLICATE_API_TOKEN) {
-      try {
-        const result =
-          type === 'text-to-video'
-            ? await replicateAPI.textToVideo({
-                prompt,
-                duration,
-              })
-            : await replicateAPI.imageToVideo({
-                prompt: prompt || 'Animate this image',
-                imageUrl,
-                duration,
-              });
-
-        return NextResponse.json({
-          success: true,
-          provider: 'replicate',
-          taskId: result.taskId,
-          status: result.taskStatus,
-        });
-      } catch (error) {
-        errors.push(`replicate: ${buildErrorMessage(error)}`);
       }
     }
 

@@ -73,6 +73,52 @@ class EvolinkAPI {
     }
   }
 
+  private isHttpUrl(value?: string | null) {
+    if (!value) return false;
+    try {
+      const parsed = new URL(value);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  }
+
+  private findDeepVideoUrl(value: any, visited = new Set<any>()): string | null {
+    if (!value || visited.has(value)) return null;
+    if (typeof value === 'string') {
+      return this.isHttpUrl(value) ? value : null;
+    }
+    if (typeof value !== 'object') return null;
+
+    visited.add(value);
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const url = this.findDeepVideoUrl(item, visited);
+        if (url) return url;
+      }
+      return null;
+    }
+
+    const direct =
+      value.video_url ??
+      value.videoUrl ??
+      value.url ??
+      value.uri ??
+      value.video ??
+      value.src ??
+      value.file ??
+      value.download_url;
+    if (this.isHttpUrl(direct)) return direct;
+
+    for (const val of Object.values(value)) {
+      const url = this.findDeepVideoUrl(val, visited);
+      if (url) return url;
+    }
+
+    return null;
+  }
+
   /**
    * Create a video generation task
    */
@@ -177,7 +223,10 @@ class EvolinkAPI {
 
       const data = await response.json();
       // Some evolink responses omit result details on /tasks/:id for completed tasks.
-      if (data?.status === 'completed' && !data?.result?.video_url) {
+      const normalizedStatus = String(data?.status || '').toLowerCase();
+      const isDone = ['completed', 'success', 'succeeded'].includes(normalizedStatus);
+      const hasValidUrl = this.isHttpUrl(data?.result?.video_url);
+      if (isDone && !hasValidUrl) {
         try {
           const detailResponse = await fetch(
             `${this.baseURL}/videos/generations/${taskId}`,
@@ -192,10 +241,16 @@ class EvolinkAPI {
 
           if (detailResponse.ok) {
             const detailData = await detailResponse.json();
-            if (detailData?.result?.video_url) {
+            const detailUrl =
+              this.findDeepVideoUrl(detailData?.result) ??
+              this.findDeepVideoUrl(detailData);
+            if (detailUrl) {
               return {
                 ...data,
-                result: detailData.result,
+                result: {
+                  ...detailData.result,
+                  video_url: detailUrl,
+                },
               };
             }
           }

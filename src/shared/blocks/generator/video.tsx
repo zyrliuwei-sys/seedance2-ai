@@ -856,7 +856,9 @@ export function VideoGenerator({
                       <div key={video.id} className="space-y-3">
                         <div className="relative overflow-hidden rounded-lg border">
                           <video
-                            src={video.url}
+                            src={`/api/proxy/file?url=${encodeURIComponent(
+                              video.url
+                            )}`}
                             controls
                             className="h-auto w-full"
                             preload="metadata"

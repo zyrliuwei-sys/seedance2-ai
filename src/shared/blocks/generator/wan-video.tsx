@@ -184,30 +184,15 @@ function useWanVideoGenerator() {
   const isGenerating = taskStatus === 'generating';
 
   // Download video using a same-origin proxy to avoid CORS issues.
-  const downloadVideo = async (url: string, filename: string) => {
-    try {
-      const resolvedUrl = url.startsWith('/api/proxy/file?')
-        ? url
-        : `/api/proxy/file?url=${encodeURIComponent(url)}`;
-      const response = await fetch(resolvedUrl);
-      if (!response.ok) throw new Error('Failed to fetch video');
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (err) {
-      console.error('Download failed:', err);
-      // Fallback: open in new tab
-      const resolvedUrl = url.startsWith('/api/proxy/file?')
-        ? url
-        : `/api/proxy/file?url=${encodeURIComponent(url)}`;
-      window.open(resolvedUrl, '_blank');
-    }
+  const downloadVideo = (url: string, filename: string) => {
+    // Simple direct download like veo4.studio
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   return {
@@ -420,15 +405,30 @@ export function WanVideoGenerator({ open, onOpenChange }: VideoGeneratorProps) {
                   <Sparkles className="size-4" />
                   <span>Video generated successfully!</span>
                 </div>
+                {/* Debug info */}
+                {process.env.NODE_ENV === 'development' && (
+                  <div className="text-xs text-white/50 space-y-1">
+                    <p>videoUrl: {videoUrl ? videoUrl.substring(0, 50) + '...' : 'null'}</p>
+                    <p>proxiedVideoUrl: {proxiedVideoUrl ? proxiedVideoUrl.substring(0, 50) + '...' : 'null'}</p>
+                  </div>
+                )}
                 {videoUrl ? (
                   <>
                     <video
-                      src={proxiedVideoUrl}
+                      key={proxiedVideoUrl || videoUrl}
+                      src={proxiedVideoUrl || videoUrl}
                       controls
-                      crossOrigin="anonymous"
-                      className="w-full rounded-lg"
+                      className="w-full rounded-lg bg-black"
                       autoPlay
                       loop
+                      onError={(e) => {
+                        console.error('[Video] Error loading video:', e);
+                        console.error('[Video] videoUrl:', videoUrl);
+                        console.error('[Video] Native error:', (e.target as HTMLVideoElement).error);
+                      }}
+                      onLoadStart={() => {
+                        console.log('[Video] Loading video:', videoUrl);
+                      }}
                     />
                     <div className="flex gap-2">
                       <Button
@@ -525,6 +525,8 @@ export function WanVideoGeneratorInline({
     duration,
     setDuration,
     taskStatus,
+    taskId,
+    provider,
     progress,
     videoUrl,
     error,
@@ -741,15 +743,55 @@ export function WanVideoGeneratorInline({
               Generated Video
             </div>
             <div className="mt-4 aspect-video overflow-hidden rounded-xl border border-white/10 bg-black/30 relative">
-              {videoUrl && taskStatus === 'completed' ? (
-                <video
-                  src={videoUrl}
-                  controls
-                  crossOrigin="anonymous"
-                  className="h-full w-full object-cover"
-                  autoPlay
-                  loop
-                />
+              {taskStatus === 'completed' && videoUrl ? (
+                <>
+                  {process.env.NODE_ENV === 'development' && (
+                    <div className="absolute top-0 left-0 right-0 z-10 bg-black/80 text-xs text-white p-1 break-all">
+                      videoUrl exists: {videoUrl}
+                    </div>
+                  )}
+                  <video
+                    key={proxiedVideoUrl || videoUrl}
+                    src={proxiedVideoUrl || videoUrl}
+                    controls
+                    className="h-full w-full object-cover"
+                    autoPlay
+                    loop
+                    onError={(e) => {
+                      console.error('[Inline Video] ========== VIDEO ERROR ==========');
+                      console.error('[Inline Video] videoUrl:', videoUrl);
+                      console.error('[Inline Video] videoUrl type:', typeof videoUrl);
+                      console.error('[Inline Video] videoUrl length:', videoUrl?.length);
+                      console.error('[Inline Video] Error event:', e);
+                      console.error('[Inline Video] Native error:', (e.target as HTMLVideoElement).error);
+                      console.error('[Inline Video] Network state:', (e.target as HTMLVideoElement).networkState);
+                    }}
+                    onLoadStart={() => {
+                      console.log('[Inline Video] ========== VIDEO LOADING ==========');
+                      console.log('[Inline Video] videoUrl:', videoUrl);
+                    }}
+                    onLoadedData={(e) => {
+                      console.log('[Inline Video] ========== VIDEO LOADED ==========');
+                      console.log('[Inline Video] Duration:', (e.target as HTMLVideoElement).duration);
+                    }}
+                  />
+                </>
+              ) : taskStatus === 'completed' && !videoUrl ? (
+                <div className="absolute inset-0 flex items-center justify-center bg-yellow-500/20">
+                  <div className="text-center p-4">
+                    <p className="text-yellow-300 font-medium">⚠️ Video URL is empty!</p>
+                    <p className="text-xs text-yellow-200/70 mt-2">Task ID: {taskId}</p>
+                    <p className="text-xs text-yellow-200/70">Provider: {provider}</p>
+                    {process.env.NODE_ENV === 'development' && (
+                      <button
+                        onClick={() => console.log('Debug State:', { taskStatus, videoUrl, taskId, provider, progress })}
+                        className="mt-2 px-2 py-1 bg-yellow-500/30 rounded text-xs"
+                      >
+                        Log State to Console
+                      </button>
+                    )}
+                  </div>
+                </div>
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Image
