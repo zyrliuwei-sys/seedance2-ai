@@ -34,12 +34,6 @@ export function Hero({
     >
       {/* Background Effects */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Top gradient glow */}
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-transparent" />
-
-        {/* Bottom mesh gradient */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
-
         {/* Subtle grid */}
         <div
           className="absolute inset-0 opacity-[0.02]"
@@ -60,7 +54,7 @@ export function Hero({
             <Link
               href={section.announcement.url || ''}
               target={section.announcement.target || '_self'}
-              className="group inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-1.5 text-sm text-gray-400 hover:text-white transition-colors"
             >
               <Zap className="size-3.5 text-yellow-500" />
               <span>{section.announcement.title}</span>
@@ -76,7 +70,7 @@ export function Hero({
           {/* Left Content */}
           <div className="space-y-8 text-center lg:text-left max-w-3xl mx-auto lg:mx-0">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-purple-500/10 border border-purple-500/20 px-4 py-1.5 text-sm">
+            <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/20 px-4 py-1.5 text-sm">
               <Sparkles className="size-3.5 text-purple-400" />
               <span className="text-purple-300 font-medium">AI Video Generator</span>
             </div>
@@ -110,7 +104,7 @@ export function Hero({
                       'h-12 px-6 rounded-lg font-medium transition-all',
                       idx === 0
                         ? 'bg-white text-slate-950 hover:bg-gray-100 shadow-lg shadow-white/10'
-                        : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
+                        : 'border border-white/10 text-white'
                     )}
                   >
                     <Link href={button.url ?? ''} target={button.target ?? '_self'} className="flex items-center gap-2">
@@ -145,13 +139,10 @@ export function Hero({
 
           {/* Right - Preview */}
           <div className="relative mx-auto lg:mx-0 max-w-2xl">
-            {/* Glow behind */}
-            <div className="absolute -inset-8 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 blur-3xl rounded-full" />
-
             {/* Preview card */}
-            <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 overflow-hidden shadow-2xl">
+            <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
               {/* Video/Image area */}
-              <div className="aspect-video relative bg-gradient-to-br from-slate-900 to-slate-800">
+              <div className="aspect-video relative">
                 {section.video?.src ? (
                   <video
                     src={section.video.src}
@@ -184,14 +175,14 @@ export function Hero({
                   onClick={handleScrollToGenerator}
                   className="absolute inset-0 flex items-center justify-center group"
                 >
-                  <div className="relative flex size-16 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all group-hover:scale-110 group-hover:bg-white/15">
+                  <div className="relative flex size-16 items-center justify-center rounded-full backdrop-blur-sm border border-white/20 transition-all group-hover:scale-110">
                     <Play className="size-6 text-white fill-white ml-0.5" />
                   </div>
                 </button>
               </div>
 
               {/* Bottom bar */}
-              <div className="p-4 bg-gradient-to-t from-slate-950/80 to-transparent">
+              <div className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex size-9 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">

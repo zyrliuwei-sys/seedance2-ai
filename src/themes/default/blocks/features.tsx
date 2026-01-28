@@ -18,17 +18,12 @@ export function Features({
   return (
     <section
       id={section.id}
-      className={cn('relative py-20 md:py-32 overflow-hidden', section.className, className)}
+      className={cn('relative py-20 md:py-32', section.className, className)}
     >
-      {/* Animated background gradients */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(120,140,255,0.15),transparent_50%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(236,72,153,0.1),transparent_45%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(99,102,241,0.1),transparent_40%)]" />
-
-      <div className="container relative z-10">
+      <div className="container">
         <ScrollAnimation>
           <div className="mx-auto max-w-3xl text-center text-balance mb-16">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 mb-6">
               <span className="h-2 w-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
               <span className="text-xs uppercase tracking-wider text-foreground/70">Features</span>
             </div>
@@ -62,13 +57,12 @@ export function Features({
                   )}
                 />
                 {/* Card content */}
-                <div className="relative h-full rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] p-8 backdrop-blur-sm transition-all duration-300 hover:border-white/20">
+                <div className="relative h-full rounded-2xl border border-white/10 p-8 backdrop-blur-sm transition-all duration-300 hover:border-white/20">
                   {/* Floating icon container */}
                   <div className="mb-6 inline-flex">
                     <div
                       className={cn(
                         'relative rounded-xl border transition-all duration-300',
-                        'bg-gradient-to-br from-white/10 to-white/5',
                         'border-white/10',
                         'group-hover:scale-110 group-hover:shadow-lg',
                         idx % 3 === 0

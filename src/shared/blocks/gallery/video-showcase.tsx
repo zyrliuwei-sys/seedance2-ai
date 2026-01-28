@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, Sparkles } from 'lucide-react';
+import { Play, Sparkles, Volume2 } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/shared/lib/utils';
@@ -132,25 +132,53 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
               <div className="aspect-video relative bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
                 {hoveredId === videoCase.id && mounted ? (
                   <video
+                    key={`playing-${videoCase.id}`}
                     src={videoCase.video}
                     autoPlay
                     loop
-                    muted
                     playsInline
                     className="h-full w-full object-cover"
                     onError={(e) => {
                       // Video not available, show placeholder
                       (e.target as HTMLVideoElement).style.display = 'none';
-                      const placeholder = e.currentTarget?.querySelector('.placeholder-content');
+                      const placeholder = e.currentTarget?.parentElement?.querySelector('.placeholder-content');
                       if (placeholder) {
                         (placeholder as HTMLElement).style.display = 'flex';
                       }
                     }}
                   />
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Play className="size-12 text-white/40" />
-                  </div>
+                  <>
+                    {/* Video Thumbnail (first frame) */}
+                    <video
+                      key={`thumb-${videoCase.id}`}
+                      src={videoCase.video}
+                      muted
+                      playsInline
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        // Video not available, show placeholder
+                        (e.target as HTMLVideoElement).style.display = 'none';
+                        const placeholder = e.currentTarget?.parentElement?.querySelector('.placeholder-content');
+                        if (placeholder) {
+                          (placeholder as HTMLElement).style.display = 'flex';
+                        }
+                      }}
+                    />
+                    {/* Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
+                      <div className="relative flex size-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm border border-white/30 transition-transform group-hover:scale-110">
+                        <Play className="size-6 text-white fill-white ml-0.5" />
+                      </div>
+                    </div>
+                    {/* Sound Indicator */}
+                    <div className="absolute top-3 right-3">
+                      <div className="flex items-center gap-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 px-2.5 py-1 text-xs font-medium text-white">
+                        <Volume2 className="size-3" />
+                        <span>Sound</span>
+                      </div>
+                    </div>
+                  </>
                 )}
 
                 {/* Placeholder (shown when video not available) */}
@@ -161,11 +189,13 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                   </div>
                 </div>
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                {/* Overlay (only when playing) */}
+                {hoveredId === videoCase.id && mounted && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                )}
 
                 {/* Category Badge */}
-                <div className="absolute top-3 left-3">
+                <div className="absolute top-3 left-3 z-10">
                   <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 text-xs font-medium text-white">
                     {videoCase.category}
                   </span>

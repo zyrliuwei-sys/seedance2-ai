@@ -18,18 +18,13 @@ export function Cta({
     <section
       id={section.id}
       className={cn(
-        'relative overflow-hidden py-20 md:py-28',
+        'relative py-20 md:py-28',
         section.className,
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(120,140,255,0.18),transparent_45%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_70%,rgba(236,72,153,0.14),transparent_40%)]" />
-
-      <div className="container relative">
-        <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.03] to-white/[0.02] p-8 shadow-[0_30px_90px_rgba(10,15,35,0.45)] backdrop-blur-sm md:p-12">
-          <div className="absolute -left-20 top-0 size-48 rounded-full bg-purple-500/20 blur-3xl" />
-          <div className="absolute -right-24 bottom-0 size-56 rounded-full bg-pink-500/20 blur-3xl" />
+      <div className="container">
+        <div className="relative overflow-hidden rounded-[32px] border border-white/10 p-8 shadow-[0_30px_90px_rgba(10,15,35,0.45)] backdrop-blur-sm md:p-12">
 
           <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl">
@@ -60,7 +55,7 @@ export function Cta({
                       'h-12 px-6 text-sm font-semibold shadow-[0_10px_30px_rgba(10,15,35,0.3)]',
                       idx === 0
                         ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-400 hover:to-pink-400'
-                        : 'border border-white/15 bg-white/5 text-foreground hover:bg-white/10'
+                        : 'border border-white/15 text-foreground'
                     )}
                     key={idx}
                   >

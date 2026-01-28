@@ -18,19 +18,16 @@ export function FeaturesList({
     // Prevent horizontal scrolling
     <section
       className={cn(
-        'relative overflow-x-hidden py-20 md:py-28',
+        'relative py-20 md:py-28',
         section.className,
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(120,140,255,0.15),transparent_45%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.12),transparent_40%)]" />
-      <div className="container relative z-10 overflow-x-hidden">
+      <div className="container">
         <div className="grid gap-10 pb-12 md:grid-cols-[1.1fr_0.9fr] md:items-stretch md:gap-16">
           <ScrollAnimation direction="left">
             <div className="relative mx-auto w-full max-w-[640px] h-full">
-              <div className="absolute -inset-3 rounded-[28px] bg-gradient-to-br from-purple-500/20 via-blue-500/10 to-pink-500/20 blur-2xl" />
-              <div className="relative h-full overflow-hidden rounded-[24px] border border-white/10 bg-white/5 shadow-[0_30px_80px_rgba(10,15,35,0.45)]">
+              <div className="relative h-full overflow-hidden rounded-[24px] border border-white/10 shadow-[0_30px_80px_rgba(10,15,35,0.45)]">
                 {section.video ? (
                   <video
                     src={section.video.src}
@@ -51,7 +48,7 @@ export function FeaturesList({
               </div>
             </div>
           </ScrollAnimation>
-          <div className="w-full min-w-0 h-full rounded-2xl border border-white/10 bg-white/[0.04] p-7 shadow-[0_24px_70px_rgba(10,15,35,0.35)] backdrop-blur-sm md:p-10">
+          <div className="w-full min-w-0 h-full rounded-2xl border border-white/10 p-7 shadow-[0_24px_70px_rgba(10,15,35,0.35)] backdrop-blur-sm md:p-10">
             <ScrollAnimation delay={0.1}>
               <p className="text-xs uppercase tracking-[0.35em] text-foreground/50">
                 Overview
@@ -103,12 +100,12 @@ export function FeaturesList({
           <div className="relative grid min-w-0 grid-cols-1 gap-4 pt-10 break-words sm:grid-cols-2 lg:grid-cols-4">
             {section.items?.map((item, idx) => (
               <div
-                className="min-w-0 space-y-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_20px_50px_rgba(10,15,35,0.35)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
+                className="min-w-0 space-y-3 rounded-2xl border border-white/10 p-5 shadow-[0_20px_50px_rgba(10,15,35,0.35)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
                 key={idx}
               >
                 <div className="flex min-w-0 items-center gap-2">
                   {item.icon && (
-                    <div className="flex size-8 items-center justify-center rounded-lg bg-white/10 text-white">
+                    <div className="flex size-8 items-center justify-center rounded-lg text-white">
                       <SmartIcon name={item.icon as string} size={16} />
                     </div>
                   )}
