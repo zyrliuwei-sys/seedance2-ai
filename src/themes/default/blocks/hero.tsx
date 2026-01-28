@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { ArrowRight, Play, Sparkles, Video, Zap } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { Link } from '@/core/i18n/navigation';
 import { WanVideoGeneratorInline } from '@/shared/blocks/generator/wan-video';
@@ -19,9 +19,44 @@ export function Hero({
   className?: string;
 }) {
   const generatorRef = useRef<HTMLDivElement | null>(null);
+  const backgroundVideo = section.background_video ?? section.video;
+
+  // 3D card effect
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleScrollToGenerator = () => {
     generatorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    setMousePosition({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    setMousePosition({ x: 0, y: 0 });
+  };
+
+  const transformStyle = {
+    transform: isHovering
+      ? `perspective(1000px) rotateX(${-mousePosition.y * 8}deg) rotateY(${mousePosition.x * 8}deg) translateZ(20px)`
+      : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)',
+    transition: isHovering ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out',
+  };
+
+  const shadowStyle = {
+    boxShadow: isHovering
+      ? `${-mousePosition.x * 30}px ${-mousePosition.y * 30 + 20}px 60px -10px rgba(168,85,247,0.4),${mousePosition.x * 20}px ${mousePosition.y * 20}px 60px -10px rgba(236,72,153,0.3)`
+      : '0 40px 80px -20px rgba(168,85,247,0.3)',
+    transition: 'box-shadow 0.3s ease-out',
   };
 
   return (
@@ -32,15 +67,35 @@ export function Hero({
         className
       )}
     >
-      {/* Background Effects */}
+      {/* Background Media */}
       <div className="pointer-events-none absolute inset-0">
+        {backgroundVideo?.src ? (
+          <video
+            src={backgroundVideo.src}
+            poster={backgroundVideo.poster}
+            autoPlay={backgroundVideo.autoplay ?? true}
+            loop={backgroundVideo.loop ?? true}
+            muted={backgroundVideo.muted ?? true}
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : section.background_image?.src ? (
+          <Image
+            src={section.background_image.src}
+            alt={section.background_image.alt || 'Hero background'}
+            fill
+            className="object-cover"
+            priority
+          />
+        ) : null}
+        <div className="absolute inset-0 bg-slate-950/70" />
         {/* Subtle grid */}
         <div
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)
+              linear-gradient(to right, rgba(255,255,255,0.12) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,0.12) 1px, transparent 1px)
             `,
             backgroundSize: '60px 60px'
           }}
@@ -139,10 +194,40 @@ export function Hero({
 
           {/* Right - Preview */}
           <div className="relative mx-auto lg:mx-0 max-w-2xl">
-            {/* Preview card */}
-            <div className="relative rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+            {/* Glow effect behind */}
+            <div
+              className="absolute -inset-8 bg-gradient-to-r from-purple-500/30 via-pink-500/20 to-blue-500/30 blur-3xl rounded-full opacity-60 transition-opacity duration-300"
+              style={{
+                opacity: isHovering ? '0.8' : '0.6',
+                transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px)`,
+                transition: 'opacity 0.3s ease-out, transform 0.1s ease-out',
+              }}
+            />
+
+            {/* Preview card with 3D effect */}
+            <div
+              ref={cardRef}
+              onMouseMove={handleMouseMove}
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={handleMouseLeave}
+              className="relative rounded-3xl overflow-hidden"
+              style={{
+                ...transformStyle,
+                ...shadowStyle,
+                border: '1px solid rgba(255,255,255,0.1)',
+              }}
+            >
+              {/* Animated gradient overlay */}
+              <div
+                className="absolute inset-0 rounded-3xl opacity-30 pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle at ${50 + mousePosition.x * 30}% ${50 + mousePosition.y * 30}%, rgba(168,85,247,0.15), transparent 50%)`,
+                  transition: 'background 0.1s ease-out',
+                }}
+              />
+
               {/* Video/Image area */}
-              <div className="aspect-video relative">
+              <div className="aspect-[16/10] relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden">
                 {section.video?.src ? (
                   <video
                     src={section.video.src}
@@ -162,41 +247,57 @@ export function Hero({
                     priority
                   />
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <Video className="size-12 text-gray-600 mx-auto mb-4" />
-                      <p className="text-gray-500">AI Video Generator</p>
+                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-slate-900">
+                    <div className="text-center">
+                      <div className="relative mx-auto mb-6 flex size-20 items-center justify-center">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-50" />
+                        <Video className="relative size-10 text-white/80" />
+                      </div>
+                      <p className="text-lg font-medium text-white/90">AI Video Generator</p>
+                      <p className="text-sm text-white/50 mt-2">Create stunning videos in seconds</p>
                     </div>
                   </div>
                 )}
+
+                {/* Subtle gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
 
                 {/* Play button */}
                 <button
                   onClick={handleScrollToGenerator}
                   className="absolute inset-0 flex items-center justify-center group"
                 >
-                  <div className="relative flex size-16 items-center justify-center rounded-full backdrop-blur-sm border border-white/20 transition-all group-hover:scale-110">
-                    <Play className="size-6 text-white fill-white ml-0.5" />
+                  <div className="relative flex size-20 items-center justify-center transition-all duration-300 group-hover:scale-110">
+                    {/* Outer glow */}
+                    <div className="absolute inset-0 bg-white/20 rounded-full blur-xl group-hover:bg-white/30 transition-all" />
+                    {/* Main button */}
+                    <div className="relative flex size-20 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+                      <Play className="size-8 text-white fill-white ml-1 drop-shadow-lg" />
+                    </div>
                   </div>
                 </button>
               </div>
 
-              {/* Bottom bar */}
-              <div className="p-4">
+              {/* Bottom bar - elevated design */}
+              <div className="relative px-6 py-5 bg-gradient-to-b from-transparent to-black/20 backdrop-blur-sm">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">
-                      <Sparkles className="size-4 text-white" />
+                  <div className="flex items-center gap-4">
+                    {/* Icon with glow */}
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl blur-lg opacity-60" />
+                      <div className="relative flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg">
+                        <Sparkles className="size-5 text-white" />
+                      </div>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">Start creating</p>
-                      <p className="text-xs text-gray-400">Free to try</p>
+                      <p className="text-base font-semibold text-white">Start Creating</p>
+                      <p className="text-sm text-white/60">Free to try · No credit card</p>
                     </div>
                   </div>
                   <Button
-                    size="sm"
+                    size="lg"
                     onClick={handleScrollToGenerator}
-                    className="h-9 bg-white text-slate-950 hover:bg-gray-100 font-medium"
+                    className="h-12 px-6 bg-white text-slate-950 hover:bg-gray-50 font-semibold rounded-xl shadow-[0_4px_20px_rgba(255,255,255,0.3)] hover:shadow-[0_6px_25px_rgba(255,255,255,0.4)] transition-all"
                   >
                     Try Now
                   </Button>

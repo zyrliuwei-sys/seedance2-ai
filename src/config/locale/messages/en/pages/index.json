@@ -20,15 +20,6 @@
         "description": "Wan Ai is a one-stop AI video generation platform powered by Wan 2.6.<br/>Transform your text or images into amazing videos in seconds.",
        
         "tip": "✨ Support text to video and image to video",
-        "buttons": [
-          {
-            "title": "Start Creating",
-            "icon": "Zap",
-            "url": "/text-to-video",
-            "target": "_self",
-            "variant": "default"
-          }
-        ],
         "show_avatars": false,
         "avatars_tip": "Thousands of creators are using Wan Ai",
         "show_award": false,
@@ -43,7 +34,7 @@
           "alt": "hero"
         },
         "background_video": {
-          "src": "/videos/demo3.mp4",
+          "src": "/videos/gallery/neon-city.mp4",
           "autoplay": true,
           "loop": true,
           "muted": true

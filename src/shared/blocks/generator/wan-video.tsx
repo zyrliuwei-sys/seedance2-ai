@@ -707,29 +707,32 @@ export function WanVideoGeneratorInline({
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-[0.3em] text-white/50">
-                    Aspect Ratio
-                  </Label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(['1:1', '16:9', '9:16'] as const).map((ratio) => (
-                      <Button
-                        key={ratio}
-                        type="button"
-                        variant="outline"
-                        onClick={() => setAspectRatio(ratio)}
-                        disabled={isGenerating}
-                        className={cn(
-                          'h-10 rounded-lg border-white/10 bg-black/30 text-white/80 hover:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed',
-                          aspectRatio === ratio &&
-                            'border-purple-300/60 bg-gradient-to-r from-purple-500/35 to-pink-500/30 text-white shadow-[0_0_0_1px_rgba(192,132,252,0.5),0_8px_18px_rgba(147,51,234,0.25)]'
-                        )}
-                      >
-                        {ratio}
-                      </Button>
-                    ))}
+                {/* Aspect Ratio - only for text-to-video */}
+                {type === 'text-to-video' && (
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-[0.3em] text-white/50">
+                      Aspect Ratio
+                    </Label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {(['1:1', '16:9', '9:16'] as const).map((ratio) => (
+                        <Button
+                          key={ratio}
+                          type="button"
+                          variant="outline"
+                          onClick={() => setAspectRatio(ratio)}
+                          disabled={isGenerating}
+                          className={cn(
+                            'h-10 rounded-lg border-white/10 bg-black/30 text-white/80 hover:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed',
+                            aspectRatio === ratio &&
+                              'border-purple-300/60 bg-gradient-to-r from-purple-500/35 to-pink-500/30 text-white shadow-[0_0_0_1px_rgba(192,132,252,0.5),0_8px_18px_rgba(147,51,234,0.25)]'
+                          )}
+                        >
+                          {ratio}
+                        </Button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 

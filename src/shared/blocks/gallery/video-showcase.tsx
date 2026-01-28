@@ -153,6 +153,7 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                     <video
                       key={`thumb-${videoCase.id}`}
                       src={videoCase.video}
+                      preload="metadata"
                       muted
                       playsInline
                       className="h-full w-full object-cover"
@@ -166,13 +167,13 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                       }}
                     />
                     {/* Play Button Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors pointer-events-none">
                       <div className="relative flex size-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm border border-white/30 transition-transform group-hover:scale-110">
                         <Play className="size-6 text-white fill-white ml-0.5" />
                       </div>
                     </div>
                     {/* Sound Indicator */}
-                    <div className="absolute top-3 right-3">
+                    <div className="absolute top-3 right-3 pointer-events-none">
                       <div className="flex items-center gap-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 px-2.5 py-1 text-xs font-medium text-white">
                         <Volume2 className="size-3" />
                         <span>Sound</span>
@@ -195,7 +196,7 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                 )}
 
                 {/* Category Badge */}
-                <div className="absolute top-3 left-3 z-10">
+                <div className="absolute top-3 left-3 z-10 pointer-events-none">
                   <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 text-xs font-medium text-white">
                     {videoCase.category}
                   </span>
