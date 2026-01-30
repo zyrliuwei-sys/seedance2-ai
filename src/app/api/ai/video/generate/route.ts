@@ -52,21 +52,41 @@ export async function POST(request: Request) {
       return respErr('Missing required field: imageUrl for image-to-video');
     }
 
+    // Anonymous user tracking
+    const anonymousId = body.anonymousId;
+
     // ========== AUTH CHECK ==========
     // Get current user
     const user = await getUserInfo();
-    if (!user) {
-      return respErr('no auth, please sign in');
+
+    // ========== ANONYMOUS FREE USAGE CHECK ==========
+    let isFreeUsage = false;
+    if (!user && anonymousId) {
+      // Check if anonymous user has used free generation
+      const { checkAnonymousUsage } = await import('@/shared/models/anonymous');
+      const hasUsedFree = await checkAnonymousUsage(anonymousId);
+
+      if (!hasUsedFree) {
+        isFreeUsage = true;
+      } else {
+        return respErr('FREE_USAGE_EXCEEDED: You have used your free video generation. Please sign in to continue generating videos.');
+      }
+    } else if (!user) {
+      return respErr('Please sign in to generate videos');
     }
 
     // ========== CREDITS CHECK ==========
     // Calculate cost credits
     const costCredits = getVideoCostCredits(type, duration);
 
-    // Check if user has enough credits
-    const remainingCredits = await getRemainingCredits(user.id);
-    if (remainingCredits < costCredits) {
-      return respErr(`insufficient credits, required: ${costCredits}, remaining: ${remainingCredits}`);
+    let remainingCredits = 0;
+    // Skip credit check for free anonymous usage
+    if (!isFreeUsage && user) {
+      // Check if user has enough credits
+      remainingCredits = await getRemainingCredits(user.id);
+      if (remainingCredits < costCredits) {
+        return respErr(`insufficient credits, required: ${costCredits}, remaining: ${remainingCredits}`);
+      }
     }
 
     // ========== VIDEO GENERATION ==========
@@ -162,9 +182,12 @@ export async function POST(request: Request) {
     }
 
     // ========== CREATE AI TASK AND DEDUCT CREDITS ==========
+    // For anonymous users, use anonymousId as userId (prefixed with 'anon_')
+    const userId = isFreeUsage ? `anon_${anonymousId}` : (user?.id ?? 'unknown');
+
     const newAITask: NewAITask = {
       id: getUuid(),
-      userId: user.id,
+      userId,
       mediaType: AIMediaType.VIDEO,
       provider: result.provider,
       model: type === 'text-to-video' ? 'wan-2.5-t2v' : 'wan-2.5-i2v',
@@ -180,7 +203,7 @@ export async function POST(request: Request) {
         imageUrl,
       }),
       status: result.taskStatus,
-      costCredits,
+      costCredits: isFreeUsage ? 0 : costCredits,
       taskId: result.taskId,
       taskInfo: null,
       taskResult: null,
@@ -188,13 +211,20 @@ export async function POST(request: Request) {
 
     await createAITask(newAITask);
 
+    // Record anonymous usage if this was a free generation
+    if (isFreeUsage && anonymousId) {
+      const { recordAnonymousUsage } = await import('@/shared/models/anonymous');
+      await recordAnonymousUsage(anonymousId);
+    }
+
     return respData({
       success: true,
       provider: result.provider,
       taskId: result.taskId,
       status: result.taskStatus,
-      costCredits,
-      remainingCredits: remainingCredits - costCredits,
+      costCredits: isFreeUsage ? 0 : costCredits,
+      remainingCredits: isFreeUsage ? 0 : remainingCredits - costCredits,
+      isFreeUsage,
     });
   } catch (error: any) {
     console.error('Video generation failed:', error);

@@ -21,9 +21,30 @@ interface VideoShowcaseProps {
   className?: string;
 }
 
+// Custom event for using a prompt from gallery
+const PROMPT_USE_EVENT = 'gallery-prompt-use';
+
+export function triggerPromptUse(prompt: string) {
+  const event = new CustomEvent(PROMPT_USE_EVENT, { detail: { prompt } });
+  window.dispatchEvent(event);
+}
+
 export function VideoShowcase({ className }: VideoShowcaseProps) {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
+
+  const handleUsePrompt = (prompt: string) => {
+    // Scroll to generator
+    const generatorElement = document.getElementById('wan-generator');
+    if (generatorElement) {
+      generatorElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Trigger prompt use event after scroll
+    setTimeout(() => {
+      triggerPromptUse(prompt);
+    }, 500);
+  };
 
   const cases: VideoCase[] = [
     {
@@ -219,6 +240,7 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                     size="sm"
                     variant="ghost"
                     className="h-8 text-purple-300 hover:text-purple-200 hover:bg-white/10"
+                    onClick={() => handleUsePrompt(videoCase.prompt)}
                   >
                     Use Prompt
                   </Button>

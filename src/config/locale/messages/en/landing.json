@@ -132,31 +132,6 @@
               "target": "_self"
             }
           ]
-        },
-        {
-          "title": "Resources",
-          "children": [
-            {
-              "title": "Documents",
-              "url": "/docs",
-              "target": "_self"
-            },
-            {
-              "title": "Blog",
-              "url": "/blog",
-              "target": "_self"
-            }
-          ]
-        },
-        {
-          "title": "Links",
-          "children": [
-            {
-              "title": "Wan 2.6",
-              "url": "https://wan2-6.art",
-              "target": "_blank"
-            }
-          ]
         }
       ]
     },

@@ -20,6 +20,8 @@ export function Hero({
 }) {
   const generatorRef = useRef<HTMLDivElement | null>(null);
   const backgroundVideo = section.background_video ?? section.video;
+  const previewVideoRef = useRef<HTMLVideoElement | null>(null);
+  const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
 
   // 3D card effect
   const cardRef = useRef<HTMLDivElement>(null);
@@ -28,6 +30,11 @@ export function Hero({
 
   const handleScrollToGenerator = () => {
     generatorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handlePlayPreview = () => {
+    if (!previewVideoRef.current) return;
+    previewVideoRef.current.play();
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -172,24 +179,6 @@ export function Hero({
               </div>
             )}
 
-            {/* Trust indicators */}
-            <div className="pt-6 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-gray-500">
-              <div className="flex items-center gap-2">
-                <Video className="size-4" />
-                <span>10K+ videos created</span>
-              </div>
-              <span>·</span>
-              <div className="flex items-center gap-2">
-                <div className="flex">
-                  {[1,2,3,4,5].map((i) => (
-                    <svg key={i} className="size-4 text-yellow-500 fill-current" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <span>4.9 rating</span>
-              </div>
-            </div>
           </div>
 
           {/* Right - Preview */}
@@ -230,12 +219,15 @@ export function Hero({
               <div className="aspect-[16/10] relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden">
                 {section.video?.src ? (
                   <video
+                    ref={previewVideoRef}
                     src={section.video.src}
                     poster={section.video.poster}
                     autoPlay={section.video.autoplay ?? true}
                     loop={section.video.loop ?? true}
                     muted={section.video.muted ?? true}
                     playsInline
+                    onPlay={() => setIsPreviewPlaying(true)}
+                    onPause={() => setIsPreviewPlaying(false)}
                     className="h-full w-full object-cover"
                   />
                 ) : section.image?.src ? (
@@ -264,8 +256,11 @@ export function Hero({
 
                 {/* Play button */}
                 <button
-                  onClick={handleScrollToGenerator}
-                  className="absolute inset-0 flex items-center justify-center group"
+                  onClick={handlePlayPreview}
+                  className={cn(
+                    'absolute inset-0 flex items-center justify-center group transition-opacity duration-300',
+                    isPreviewPlaying ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                  )}
                 >
                   <div className="relative flex size-20 items-center justify-center transition-all duration-300 group-hover:scale-110">
                     {/* Outer glow */}
@@ -308,19 +303,6 @@ export function Hero({
         </div>
       </div>
 
-      {/* Logo cloud */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="text-center">
-          <p className="text-xs text-gray-600 uppercase tracking-widest mb-6">Trusted by leading companies</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-40">
-            {['Stripe', 'Vercel', 'Linear', 'Notion', 'Figma', 'Framer'].map((company, idx) => (
-              <span key={idx} className="text-sm font-semibold text-gray-500">
-                {company}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Video Generator */}
       <div ref={generatorRef} id="wan-generator" className="relative z-10 mx-auto max-w-7xl px-4 pb-20">

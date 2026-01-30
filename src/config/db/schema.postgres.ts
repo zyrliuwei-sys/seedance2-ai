@@ -555,3 +555,15 @@ export const chatMessage = table(
     index('idx_chat_message_user_id').on(table.userId, table.status),
   ]
 );
+
+// Anonymous user free usage tracking
+export const anonymousUsage = table(
+  'anonymous_usage',
+  {
+    id: text('id').primaryKey(),
+    usedAt: timestamp('used_at').defaultNow().notNull(),
+  },
+  (table) => [
+    index('idx_anonymous_usage_used_at').on(table.usedAt),
+  ]
+);

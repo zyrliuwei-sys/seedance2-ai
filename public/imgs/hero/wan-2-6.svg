@@ -1,0 +1,66 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1024"/>
+      <stop offset="50%" stop-color="#15224A"/>
+      <stop offset="100%" stop-color="#0E1A3A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.7" cy="0.2" r="0.6">
+      <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#2563EB" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0B1024" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="50%" stop-color="#A78BFA"/>
+      <stop offset="100%" stop-color="#F472B6"/>
+    </linearGradient>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" stroke="#FFFFFF" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+  <rect width="1200" height="800" fill="url(#glow)"/>
+
+  <g opacity="0.6">
+    <path d="M120 560C240 420 360 380 480 360C620 336 760 370 920 310" stroke="url(#stroke)" stroke-width="2.5" fill="none"/>
+    <path d="M200 640C330 520 470 460 640 450C790 440 940 470 1080 380" stroke="#60A5FA" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <g>
+    <circle cx="880" cy="220" r="110" fill="#7C3AED" fill-opacity="0.12"/>
+    <circle cx="880" cy="220" r="68" fill="#22D3EE" fill-opacity="0.14"/>
+    <circle cx="880" cy="220" r="36" fill="#F472B6" fill-opacity="0.18"/>
+  </g>
+
+  <g>
+    <rect x="90" y="120" width="420" height="220" rx="20" fill="#0F1B3C" stroke="url(#stroke)" stroke-width="1.2"/>
+    <rect x="120" y="150" width="220" height="16" rx="8" fill="#FFFFFF" fill-opacity="0.75"/>
+    <rect x="120" y="182" width="310" height="12" rx="6" fill="#FFFFFF" fill-opacity="0.35"/>
+    <rect x="120" y="206" width="280" height="12" rx="6" fill="#FFFFFF" fill-opacity="0.22"/>
+    <rect x="120" y="236" width="150" height="10" rx="5" fill="#FFFFFF" fill-opacity="0.18"/>
+  </g>
+
+  <g>
+    <rect x="90" y="380" width="520" height="300" rx="26" fill="#0B132E" stroke="#223562" stroke-width="1"/>
+    <path d="M130 440H560" stroke="#3B82F6" stroke-opacity="0.4" stroke-width="1.5"/>
+    <path d="M130 480H560" stroke="#A78BFA" stroke-opacity="0.25" stroke-width="1.5"/>
+    <path d="M130 520H560" stroke="#22D3EE" stroke-opacity="0.25" stroke-width="1.5" fill="none"/>
+    <rect x="130" y="560" width="160" height="44" rx="12" fill="#111C3F" stroke="#2B3F6D" stroke-width="1"/>
+    <rect x="310" y="560" width="260" height="44" rx="12" fill="#111C3F" stroke="#2B3F6D" stroke-width="1"/>
+  </g>
+
+  <g>
+    <text x="700" y="520" fill="#E2E8F0" font-size="72" font-family="'SF Pro Display', 'Segoe UI', Arial, sans-serif" font-weight="700" letter-spacing="2">WAN 2.6</text>
+    <text x="700" y="570" fill="#94A3B8" font-size="20" font-family="'SF Pro Text', 'Segoe UI', Arial, sans-serif" letter-spacing="4">AI VIDEO GENERATION</text>
+  </g>
+
+  <g opacity="0.6">
+    <rect x="700" y="610" width="360" height="70" rx="18" fill="#0F1B3C" stroke="url(#stroke)" stroke-width="1.2"/>
+    <circle cx="740" cy="645" r="16" fill="#22D3EE"/>
+    <rect x="770" y="632" width="120" height="10" rx="5" fill="#E2E8F0" fill-opacity="0.75"/>
+    <rect x="770" y="650" width="200" height="8" rx="4" fill="#E2E8F0" fill-opacity="0.4"/>
+  </g>
+</svg>

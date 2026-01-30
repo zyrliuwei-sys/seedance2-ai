@@ -29,6 +29,7 @@ export function FeaturesAccordion({
     images[`item-${idx + 1}`] = {
       image: item.image?.src ?? '',
       alt: item.image?.alt || item.title || '',
+      video: item.video,
     };
   });
 
@@ -125,13 +126,13 @@ export function FeaturesAccordion({
                     transition={{ duration: 0.4, ease: "easeOut" }}
                     className="size-full overflow-hidden rounded-2xl"
                   >
-                    {section.video ? (
+                    {(images[activeItem]?.video ?? section.video) ? (
                       <video
-                        src={section.video.src}
-                        poster={section.video.poster}
-                        autoPlay={section.video.autoplay ?? true}
-                        loop={section.video.loop ?? true}
-                        muted={section.video.muted ?? true}
+                        src={(images[activeItem]?.video ?? section.video)?.src}
+                        poster={(images[activeItem]?.video ?? section.video)?.poster}
+                        autoPlay={(images[activeItem]?.video ?? section.video)?.autoplay ?? true}
+                        loop={(images[activeItem]?.video ?? section.video)?.loop ?? true}
+                        muted={(images[activeItem]?.video ?? section.video)?.muted ?? true}
                         playsInline
                         className="size-full object-cover"
                       />

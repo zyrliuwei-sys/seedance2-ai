@@ -6,7 +6,6 @@ import { Menu, X } from 'lucide-react';
 import { Link, usePathname } from '@/core/i18n/navigation';
 import {
   BrandLogo,
-  LocaleSelector,
   SignUser,
   SmartIcon,
   ThemeToggler,
@@ -313,7 +312,6 @@ export function Header({ header }: { header: HeaderType }) {
                     ))}
 
                   {header.show_theme ? <ThemeToggler /> : null}
-                  {header.show_locale ? <LocaleSelector /> : null}
                   <div className="flex-1 md:hidden"></div>
                   {header.show_sign ? (
                     <SignUser userNav={header.user_nav} />

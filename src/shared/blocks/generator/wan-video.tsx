@@ -28,6 +28,18 @@ import { useSession } from '@/core/auth/client';
 import { Link } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
 
+// Anonymous user management
+const ANONYMOUS_ID_KEY = 'anonymous_video_id';
+const getAnonymousId = () => {
+  if (typeof window === 'undefined') return null;
+  let id = localStorage.getItem(ANONYMOUS_ID_KEY);
+  if (!id) {
+    id = `anon_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+    localStorage.setItem(ANONYMOUS_ID_KEY, id);
+  }
+  return id;
+};
+
 interface VideoGeneratorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -48,6 +60,11 @@ function useWanVideoGenerator() {
   const [taskId, setTaskId] = useState<string>('');
   const [provider, setProvider] = useState<'evolink' | 'replicate' | ''>('');
   const [progress, setProgress] = useState(0);
+
+  // Anonymous/free usage states
+  const [needsAuth, setNeedsAuth] = useState(false);
+  const [isFreeUsage, setIsFreeUsage] = useState(false);
+  const session = useSession();
   const [videoUrl, setVideoUrl] = useState<string>('');
   const [error, setError] = useState<string>('');
 
@@ -119,6 +136,8 @@ function useWanVideoGenerator() {
     setError('');
     setVideoUrl('');
     setProgress(0);
+    setNeedsAuth(false);
+    setIsFreeUsage(false);
 
     if (type === 'text-to-video' && !prompt.trim()) {
       setError('Please enter a prompt');
@@ -130,6 +149,9 @@ function useWanVideoGenerator() {
       return;
     }
 
+    // Get anonymous ID if not logged in
+    const anonymousId = !session.data?.user ? getAnonymousId() : null;
+
     setTaskStatus('generating');
 
     try {
@@ -137,7 +159,8 @@ function useWanVideoGenerator() {
         type,
         aspectRatio,
         quality,
-        duration
+        duration,
+        anonymousId: anonymousId ? 'yes' : 'no',
       });
 
       const response = await fetch('/api/ai/video/generate', {
@@ -150,6 +173,7 @@ function useWanVideoGenerator() {
           aspectRatio,
           quality,
           duration,
+          anonymousId,
         }),
       });
 
@@ -159,13 +183,24 @@ function useWanVideoGenerator() {
       console.log('[Frontend] Generate API response:', json);
 
       if (!response.ok || json.code !== 0) {
-        throw new Error(json.data?.details || json.data?.error || json.message || 'Failed to start generation');
+        const errorMessage = json.data?.details || json.data?.error || json.message || 'Failed to start generation';
+
+        // Check if error is about free usage exceeded
+        if (errorMessage.includes('FREE_USAGE_EXCEEDED') || errorMessage.includes('free generation')) {
+          setTaskStatus('idle');
+          setNeedsAuth(true);
+          setError('');
+          return;
+        }
+
+        throw new Error(errorMessage);
       }
 
       const data = json.data;
       if (data.success) {
         setTaskId(data.taskId);
         setProvider(data.provider || '');
+        setIsFreeUsage(data.isFreeUsage || false);
         console.log('[Frontend] Task created successfully:', data.taskId);
       } else {
         setTaskStatus('failed');
@@ -236,6 +271,8 @@ function useWanVideoGenerator() {
     handleGenerate,
     handleReset,
     downloadVideo,
+    needsAuth,
+    isFreeUsage,
   };
 }
 
@@ -262,6 +299,8 @@ export function WanVideoGenerator({ open, onOpenChange }: VideoGeneratorProps) {
     handleGenerate,
     handleReset,
     downloadVideo,
+    needsAuth,
+    isFreeUsage,
   } = useWanVideoGenerator();
 
   const proxiedVideoUrl = videoUrl
@@ -296,7 +335,7 @@ export function WanVideoGenerator({ open, onOpenChange }: VideoGeneratorProps) {
               <Label htmlFor="prompt" className="text-white">Prompt</Label>
               <Textarea
                 id="prompt"
-                placeholder="A cinematic drone shot of a futuristic city at night with neon lights..."
+                placeholder=""
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 rows={4}
@@ -328,7 +367,7 @@ export function WanVideoGenerator({ open, onOpenChange }: VideoGeneratorProps) {
               <Label htmlFor="imagePrompt" className="text-white">Motion Description (Optional)</Label>
               <Textarea
                 id="imagePrompt"
-                placeholder="Describe how you want the image to move..."
+                placeholder=""
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 rows={3}
@@ -418,9 +457,17 @@ export function WanVideoGenerator({ open, onOpenChange }: VideoGeneratorProps) {
 
             {taskStatus === 'completed' && (
               <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm text-green-400">
-                  <Sparkles className="size-4" />
-                  <span>Video generated successfully!</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm text-green-400">
+                    <Sparkles className="size-4" />
+                    <span>Video generated successfully!</span>
+                  </div>
+                  {isFreeUsage && (
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30">
+                      <Sparkles className="size-3 text-green-400" />
+                      <span className="text-xs text-green-300 font-medium">Free Generation</span>
+                    </div>
+                  )}
                 </div>
                 {/* Debug info */}
                 {process.env.NODE_ENV === 'development' && (
@@ -521,6 +568,38 @@ export function WanVideoGenerator({ open, onOpenChange }: VideoGeneratorProps) {
           </div>
         )}
       </DialogContent>
+
+      {/* Auth required dialog */}
+      <Dialog open={needsAuth} onOpenChange={() => {}}>
+        <DialogContent className="max-w-md border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-white">
+              <AlertCircle className="size-5 text-yellow-400" />
+              Free Generation Used
+            </DialogTitle>
+            <DialogDescription className="text-white/60">
+              You have used your free video generation. Sign in to continue creating amazing videos!
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-3 pt-4">
+            <Button asChild className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+              <Link href="/auth/sign-in" className="flex items-center justify-center gap-2">
+                <LogIn className="size-4" />
+                Sign In to Continue
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full border-white/10 text-white/80 hover:bg-white/5"
+              onClick={() => window.location.href = '/pricing'}
+            >
+              <Wallet className="size-4 mr-2" />
+              View Pricing Plans
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 }
@@ -557,11 +636,41 @@ export function WanVideoGeneratorInline({
     handleGenerate,
     handleReset,
     downloadVideo,
+    needsAuth,
+    isFreeUsage,
   } = useWanVideoGenerator();
 
   // Check if error is auth-related or credits-related
   const isAuthError = error?.toLowerCase().includes('no auth') || error?.toLowerCase().includes('please sign in');
   const isCreditsError = error?.toLowerCase().includes('insufficient credits');
+
+  // Listen for gallery prompt use events
+  useEffect(() => {
+    const handleGalleryPrompt = (event: Event) => {
+      const customEvent = event as CustomEvent<{ prompt: string }>;
+      const galleryPrompt = customEvent.detail.prompt;
+
+      // Reset any previous state
+      handleReset();
+
+      // Set the prompt
+      setPrompt(galleryPrompt);
+
+      // Switch to text-to-video mode
+      setType('text-to-video');
+
+      // Auto-generate after a short delay to let the UI update
+      setTimeout(() => {
+        handleGenerate();
+      }, 300);
+    };
+
+    window.addEventListener('gallery-prompt-use', handleGalleryPrompt);
+
+    return () => {
+      window.removeEventListener('gallery-prompt-use', handleGalleryPrompt);
+    };
+  }, [handleReset, setPrompt, setType, handleGenerate]);
 
   const proxiedVideoUrl = videoUrl
     ? `/api/proxy/file?url=${encodeURIComponent(videoUrl)}`
@@ -618,7 +727,7 @@ export function WanVideoGeneratorInline({
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.3em] text-white/40">Input</p>
-                <h3 className="mt-2 text-lg font-semibold text-white">Creative Brief</h3>
+                <h3 className="mt-2 text-lg font-semibold text-white">Video Generator</h3>
               </div>
               <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/60">
                 {prompt.length}/2500
@@ -828,6 +937,12 @@ export function WanVideoGeneratorInline({
               >
                 {isGenerating ? 'Rendering' : taskStatus === 'completed' ? 'Ready' : 'Waiting'}
               </div>
+              {taskStatus === 'completed' && isFreeUsage && (
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30">
+                  <Sparkles className="size-3 text-green-400" />
+                  <span className="text-xs text-green-300 font-medium">Free Generation</span>
+                </div>
+              )}
             </div>
 
             <div className="mt-5 flex flex-1 flex-col">
@@ -949,6 +1064,40 @@ export function WanVideoGeneratorInline({
           </div>
         </div>
       </div>
+
+      {/* Auth required dialog */}
+      {needsAuth && (
+        <Dialog open={needsAuth} onOpenChange={() => {}}>
+          <DialogContent className="max-w-md border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-white">
+                <AlertCircle className="size-5 text-yellow-400" />
+                Free Generation Used
+              </DialogTitle>
+              <DialogDescription className="text-white/60">
+                You have used your free video generation. Sign in to continue creating amazing videos!
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="flex flex-col gap-3 pt-4">
+              <Button asChild className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+                <Link href="/auth/sign-in" className="flex items-center justify-center gap-2">
+                  <LogIn className="size-4" />
+                  Sign In to Continue
+                </Link>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full border-white/10 text-white/80 hover:bg-white/5"
+                onClick={() => window.location.href = '/pricing'}
+              >
+                <Wallet className="size-4 mr-2" />
+                View Pricing Plans
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

@@ -8,7 +8,7 @@
      
       "features",
       "stats",
-    
+      "testimonials",
       "faq",
       "cta"
     ],
@@ -24,7 +24,7 @@
         "avatars_tip": "Thousands of creators are using Wan Ai",
         "show_award": false,
         "video": {
-          "src": "/videos/demo2.mp4",
+          "src": "/videos/gallery/1234.mp4",
           "autoplay": true,
           "loop": true,
           "muted": true
@@ -88,7 +88,7 @@
         "label": "Introduce",
         "description": "Wan Ai is a one-stop AI video generation platform featuring the latest Wan 2.6 technology. Create stunning videos from text or images effortlessly.",
         "video": {
-          "src": "/videos/demo.mp4",
+          "src": "/videos/gallery/space-nebula.mp4",
           "autoplay": true,
           "loop": true,
           "muted": true
@@ -159,6 +159,12 @@
             "title": "Multiple Generation Modes",
             "description": "Support for both text-to-video and image-to-video generation, giving you creative flexibility.",
             "icon": "RiClapperboardAiLine",
+            "video": {
+              "src": "/videos/gallery/1.mp4",
+              "autoplay": true,
+              "loop": true,
+              "muted": true
+            },
             "image": {
               "src": "/imgs/features/admin-settings.png",
               "alt": "benefits"
@@ -168,6 +174,12 @@
             "title": "Easy to Use",
             "description": "Simple and intuitive interface designed for creators of all skill levels. No technical expertise required.",
             "icon": "RiMagicFill",
+            "video": {
+              "src": "/videos/gallery/2.mp4",
+              "autoplay": true,
+              "loop": true,
+              "muted": true
+            },
             "image": {
               "src": "/imgs/features/landing-page.png",
               "alt": "benefits"
