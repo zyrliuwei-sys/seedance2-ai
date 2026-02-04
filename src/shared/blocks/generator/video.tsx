@@ -824,66 +824,6 @@ export function VideoGenerator({
                 )}
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl font-semibold">
-                  <Video className="h-5 w-5" />
-                  {t('generated_videos')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-8">
-                {generatedVideos.length > 0 ? (
-                  <div className="space-y-6">
-                    {generatedVideos.map((video) => (
-                      <div key={video.id} className="space-y-3">
-                        <div className="relative overflow-hidden rounded-lg border">
-                          <video
-                            src={`/api/proxy/file?url=${encodeURIComponent(
-                              video.url
-                            )}`}
-                            controls
-                            className="h-auto w-full"
-                            preload="metadata"
-                          />
-
-                          <div className="absolute right-2 bottom-2 flex justify-end text-sm">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="ml-auto"
-                              onClick={() => handleDownloadVideo(video)}
-                              disabled={downloadingVideoId === video.id}
-                            >
-                              {downloadingVideoId === video.id ? (
-                                <>
-                                  <Loader2 className="h-4 w-4 animate-spin" />
-                                </>
-                              ) : (
-                                <>
-                                  <Download className="h-4 w-4" />
-                                </>
-                              )}
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-16 text-center">
-                    <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-                      <Video className="text-muted-foreground h-10 w-10" />
-                    </div>
-                    <p className="text-muted-foreground">
-                      {isGenerating
-                        ? t('ready_to_generate')
-                        : t('no_videos_generated')}
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>
