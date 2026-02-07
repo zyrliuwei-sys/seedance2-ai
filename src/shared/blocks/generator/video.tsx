@@ -208,6 +208,7 @@ export function VideoGenerator({
   srOnlyTitle,
 }: VideoGeneratorProps) {
   const t = useTranslations('ai.video.generator');
+  const router = useRouter();
 
   const [activeTab, setActiveTab] =
     useState<VideoGeneratorTab>('text-to-video');

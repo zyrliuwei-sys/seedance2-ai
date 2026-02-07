@@ -117,17 +117,20 @@ export function FeaturesAccordion({
                   )}
                 >
                   {/* Feature card - alternates left/right */}
-                  <MagicCard
-                    className={cn(
-                      'rounded-2xl border border-white/10 bg-[#0b0f12]/80 p-6 transition-all duration-300',
-                      isActive ? 'border-emerald-400/30' : 'hover:border-white/20'
-                    )}
-                    gradientFrom={isActive ? colors.from : '#34d399'}
-                    gradientTo={isActive ? colors.to : '#38bdf8'}
-                    gradientOpacity={isActive ? 0.18 : 0.12}
-                    gradientSize={200}
+                  <button
                     onClick={() => setActiveItem(`item-${idx + 1}`)}
+                    className="text-left w-full"
                   >
+                    <MagicCard
+                      className={cn(
+                        'rounded-2xl border border-white/10 bg-[#0b0f12]/80 p-6 transition-all duration-300',
+                        isActive ? 'border-emerald-400/30' : 'hover:border-white/20'
+                      )}
+                      gradientFrom={isActive ? colors.from : '#34d399'}
+                      gradientTo={isActive ? colors.to : '#38bdf8'}
+                      gradientOpacity={isActive ? 0.18 : 0.12}
+                      gradientSize={200}
+                    >
                     <div className="flex items-start gap-4">
                       {/* Icon */}
                       <div className="flex-shrink-0">
@@ -170,6 +173,7 @@ export function FeaturesAccordion({
                       )} />
                     </div>
                   </MagicCard>
+                  </button>
 
                   {/* Preview - alternates right/left */}
                   <div className={cn('order-2', isEven ? 'md:order-2' : 'md:order-1')}>
