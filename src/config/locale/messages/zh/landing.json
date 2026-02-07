@@ -2,10 +2,10 @@
   "header": {
     "id": "header",
     "brand": {
-      "title": "ShipAny Two",
+      "title": "Seedance2 AI",
       "logo": {
         "src": "/logo.png",
-        "alt": "ShipAny Two",
+        "alt": "Seedance2 AI",
         "width": 100,
         "height": 100
       },
@@ -107,17 +107,17 @@
     "show_theme": true,
     "show_locale": true,
     "topbanner": {
-      "text": "此网站是 ShipAny 模板的演示站点，购买 ShipAny 模板，请访问 <a href='https://shipany.ai/zh/pricing' class='text-orange-300' target='_blank'>ShipAny 官网</a>"
+      "text": "体验最新的 Seedance2 AI 视频生成功能，支持文字和图片生成视频：<a href='https://ai-seedance2.art' class='text-orange-300' target='_blank'>ai-seedance2.art</a>"
     }
   },
   "footer": {
     "id": "footer",
     "brand": {
-      "title": "ShipAny Two",
-      "description": "ShipAny 是专为 AI SaaS 创业项目打造的 NextJS 模板。丰富模板与组件，极速交付你的产品。",
+      "title": "Seedance2 AI",
+      "description": "Seedance2 AI 是一个 AI 视频生成平台，提供最新的 Seedance2 视频生成能力，支持文字和图片生成视频。",
       "logo": {
         "src": "/logo.png",
-        "alt": "ShipAny Two",
+        "alt": "Seedance2 AI",
         "width": 100,
         "height": 100
       },
@@ -152,25 +152,25 @@
         {
           "title": "X",
           "icon": "RiTwitterXFill",
-          "url": "https://x.com/your-app-name",
+          "url": "https://ai-seedance2.art",
           "target": "_blank"
         },
         {
           "title": "Github",
           "icon": "Github",
-          "url": "https://github.com/your-app-name",
+          "url": "https://ai-seedance2.art",
           "target": "_blank"
         },
         {
           "title": "Discord",
           "icon": "RiDiscordFill",
-          "url": "https://discord.gg/your-app-name",
+          "url": "https://ai-seedance2.art",
           "target": "_blank"
         },
         {
           "title": "邮箱",
           "icon": "Mail",
-          "url": "mailto:support@your-domain.com",
+          "url": "mailto:zyrliuwei@gmail.com",
           "target": "_self"
         }
       ]

@@ -1,8 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import { SmartIcon } from '@/shared/blocks/common/smart-icon';
 import { ScrollAnimation } from '@/shared/components/ui/scroll-animation';
+import { AnimatedGradientText } from '@/shared/components/ui/animated-gradient-text';
+import { BentoCard, BentoGrid } from '@/shared/components/ui/bento-grid';
+import { MagicCard } from '@/shared/components/ui/magic-card';
+import { BorderBeam } from '@/shared/components/magicui/border-beam';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 
@@ -13,117 +16,78 @@ export function Features({
   section: Section;
   className?: string;
 }) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
   return (
     <section
       id={section.id}
-      className={cn('relative py-20 md:py-32', section.className, className)}
+      className={cn('relative overflow-hidden py-20 md:py-28 bg-[#050608]', section.className, className)}
     >
-      <div className="container">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 left-1/3 h-80 w-80 rounded-full bg-emerald-500/10 blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-sky-500/10 blur-[140px]" />
+      </div>
+
+      <div className="container relative">
         <ScrollAnimation>
-          <div className="mx-auto max-w-3xl text-center text-balance mb-16">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 mb-6">
-              <span className="h-2 w-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-xs uppercase tracking-wider text-foreground/70">Features</span>
+          <div className="mx-auto max-w-3xl text-center text-balance mb-14">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 mb-6">
+              <span className="h-2 w-2 rounded-full bg-gradient-to-r from-emerald-400 to-sky-400" />
+              <AnimatedGradientText
+                speed={1.5}
+                colorFrom="#34d399"
+                colorTo="#38bdf8"
+                className="text-xs uppercase tracking-[0.35em]"
+              >
+                Seedance2 Features
+              </AnimatedGradientText>
             </div>
-            <h2 className="text-foreground mb-6 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
+            <h2 className="text-white mb-5 text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
               {section.title}
             </h2>
-            <p className="text-muted-foreground text-lg md:text-xl">
-              {section.description}
-            </p>
+            <p className="text-white/65 text-lg md:text-xl">{section.description}</p>
           </div>
         </ScrollAnimation>
 
         <ScrollAnimation delay={0.2}>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <BentoGrid className="grid-cols-1 md:grid-cols-3 auto-rows-[18rem]">
             {section.items?.map((item, idx) => (
-              <div
+              <BentoCard
                 key={idx}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                className="group relative"
+                className={cn(
+                  'col-span-1',
+                  idx === 0 ? 'md:col-span-2' : '',
+                  idx === 3 ? 'md:col-span-2' : ''
+                )}
               >
-                {/* Animated gradient border effect */}
-                <div
-                  className={cn(
-                    'absolute -inset-0.5 rounded-2xl bg-gradient-to-r opacity-0 blur transition duration-500 group-hover:opacity-100',
-                    idx % 3 === 0
-                      ? 'from-purple-500 to-pink-500'
-                      : idx % 3 === 1
-                        ? 'from-blue-500 to-purple-500'
-                        : 'from-pink-500 to-rose-500'
-                  )}
-                />
-                {/* Card content */}
-                <div className="relative h-full rounded-2xl border border-white/10 p-8 backdrop-blur-sm transition-all duration-300 hover:border-white/20">
-                  {/* Floating icon container */}
-                  <div className="mb-6 inline-flex">
-                    <div
-                      className={cn(
-                        'relative rounded-xl border transition-all duration-300',
-                        'border-white/10',
-                        'group-hover:scale-110 group-hover:shadow-lg',
-                        idx % 3 === 0
-                          ? 'group-hover:border-purple-500/30 group-hover:shadow-purple-500/20'
-                          : idx % 3 === 1
-                            ? 'group-hover:border-blue-500/30 group-hover:shadow-blue-500/20'
-                            : 'group-hover:border-pink-500/30 group-hover:shadow-pink-500/20'
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          'flex size-14 items-center justify-center rounded-lg',
-                          'bg-gradient-to-br opacity-90',
-                          idx % 3 === 0
-                            ? 'from-purple-500/20 to-pink-500/20'
-                            : idx % 3 === 1
-                              ? 'from-blue-500/20 to-purple-500/20'
-                              : 'from-pink-500/20 to-rose-500/20'
-                        )}
-                      >
-                        <SmartIcon
-                          name={item.icon as string}
-                          size={28}
-                          className={cn(
-                            'transition-transform duration-300',
-                            hoveredIndex === idx ? 'scale-110 rotate-6' : ''
-                          )}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Title and description */}
-                  <h3 className="mb-3 text-xl font-semibold text-foreground transition-colors duration-300 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-foreground group-hover:to-foreground/70">
-                    {item.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {item.description}
-                  </p>
-
-                  {/* Subtle glow effect on hover */}
-                  <div
-                    className={cn(
-                      'absolute inset-0 rounded-2xl bg-gradient-to-br opacity-0 transition-opacity duration-500 pointer-events-none',
-                      idx % 3 === 0
-                        ? 'from-purple-500/5 to-pink-500/5'
-                        : idx % 3 === 1
-                          ? 'from-blue-500/5 to-purple-500/5'
-                          : 'from-pink-500/5 to-rose-500/5',
-                      hoveredIndex === idx ? 'opacity-100' : ''
-                    )}
+                <MagicCard
+                  className="h-full rounded-2xl border border-white/10 bg-[#0b0f12]/80 p-6"
+                  gradientFrom="#34d399"
+                  gradientTo="#fbbf24"
+                  gradientOpacity={0.18}
+                  gradientSize={200}
+                >
+                  <BorderBeam
+                    size={100}
+                    duration={7}
+                    colorFrom="#34d399"
+                    colorTo="#38bdf8"
+                    borderWidth={1}
                   />
-                </div>
-              </div>
+                  <div className="flex h-full flex-col gap-4">
+                    <div className="inline-flex size-12 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                      <SmartIcon name={item.icon as string} size={24} className="text-emerald-200" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                      <p className="mt-2 text-sm text-white/60 leading-relaxed">{item.description}</p>
+                    </div>
+                    <div className="mt-auto h-px w-full bg-gradient-to-r from-emerald-400/30 via-sky-400/20 to-transparent" />
+                  </div>
+                </MagicCard>
+              </BentoCard>
             ))}
-          </div>
+          </BentoGrid>
         </ScrollAnimation>
       </div>
-
-      {/* Bottom gradient fade */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 }

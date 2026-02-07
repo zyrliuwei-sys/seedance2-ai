@@ -2,10 +2,10 @@
   "header": {
     "id": "header",
     "brand": {
-      "title": "Wan Ai",
+      "title": "Seedance2 AI",
       "logo": {
         "src": "/logo.png",
-        "alt": "Wan Ai",
+        "alt": "Seedance2 AI",
         "width": 100,
         "height": 100
       },
@@ -95,17 +95,17 @@
     "show_theme": false,
     "show_locale": false,
     "topbanner": {
-      "text": "Experience the latest Wan 2.6 AI video generation technology. Create stunning videos from text or images at <a href='https://wan2-6.art' class='text-orange-300' target='_blank'>wan2-6.art</a>"
+      "text": "Experience the latest Seedance2 AI video generation. Create videos from text or images at <a href='https://ai-seedance2.art' class='text-orange-300' target='_blank'>ai-seedance2.art</a>"
     }
   },
   "footer": {
     "id": "footer",
     "brand": {
-      "title": "Wan Ai",
-      "description": "Wan Ai is a one-stop AI video generation platform featuring the latest Wan 2.6 AI video generation technology. Create stunning videos from text prompts or images.",
+      "title": "Seedance2 AI",
+      "description": "Seedance2 AI is an AI video generation platform featuring the latest Seedance2 capabilities. Create videos from text prompts or images.",
       "logo": {
         "src": "/logo.png",
-        "alt": "Wan Ai",
+        "alt": "Seedance2 AI",
         "width": 1024,
         "height": 1024
       },
@@ -140,19 +140,19 @@
         {
           "title": "X",
           "icon": "RiTwitterXFill",
-          "url": "https://x.com/wanai",
+          "url": "https://ai-seedance2.art",
           "target": "_blank"
         },
         {
           "title": "Github",
           "icon": "Github",
-          "url": "https://github.com/wanai",
+          "url": "https://ai-seedance2.art",
           "target": "_blank"
         },
         {
           "title": "Discord",
           "icon": "RiDiscordFill",
-          "url": "https://discord.gg/wanai",
+          "url": "https://ai-seedance2.art",
           "target": "_blank"
         },
         {

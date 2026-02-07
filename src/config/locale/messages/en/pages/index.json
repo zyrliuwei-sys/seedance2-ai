@@ -2,10 +2,8 @@
   "page": {
     "show_sections": [
       "hero",
-      
       "introduce",
       "benefits",
-     
       "features",
       "stats",
       "testimonials",
@@ -15,13 +13,12 @@
     "sections": {
       "hero": {
         "id": "hero",
-        "title": "Create Stunning Videos with AI",
-        "highlight_text": "Stunning Videos",
-        "description": "Wan Ai is a one-stop AI video generation platform powered by Wan 2.6.<br/>Transform your text or images into amazing videos in seconds.",
-       
-        "tip": "✨ Support text to video and image to video",
+        "title": "Create Videos with Seedance2 AI",
+        "highlight_text": "Seedance2 AI",
+        "description": "Seedance2 AI is an AI video generation platform featuring the latest Seedance2 capabilities.<br/>Create videos from text prompts or images in seconds.",
+        "tip": "✨ Supports text-to-video and image-to-video",
         "show_avatars": false,
-        "avatars_tip": "Thousands of creators are using Wan Ai",
+        "avatars_tip": "Creators are using Seedance2 AI",
         "show_award": false,
         "video": {
           "src": "/videos/gallery/1234.mp4",
@@ -42,7 +39,7 @@
       },
       "logos": {
         "id": "logos",
-        "title": "Powered by the latest Wan 2.6 AI technology",
+        "title": "Powered by the latest Seedance2 model",
         "items": [
           {
             "title": "Next.js",
@@ -84,9 +81,9 @@
       "introduce": {
         "block": "features-list",
         "id": "introduce",
-        "title": "What is Wan Ai",
+        "title": "What is Seedance2 AI",
         "label": "Introduce",
-        "description": "Wan Ai is a one-stop AI video generation platform featuring the latest Wan 2.6 technology. Create stunning videos from text or images effortlessly.",
+        "description": "Seedance2 AI is a next-generation video creation platform. Turn text prompts or images into high-quality videos powered by Seedance2.",
         "video": {
           "src": "/videos/gallery/space-nebula.mp4",
           "autoplay": true,
@@ -96,7 +93,7 @@
         "items": [
           {
             "title": "Text to Video",
-            "description": "Transform your text prompts into stunning videos using the power of Wan 2.6 AI technology.",
+            "description": "Transform text prompts into cinematic videos with Seedance2 AI.",
             "icon": "RiVideoLine",
             "image": {
               "src": "/imgs/features/1.png",
@@ -105,7 +102,7 @@
           },
           {
             "title": "Image to Video",
-            "description": "Bring your images to life by converting them into dynamic, engaging video content.",
+            "description": "Animate images into vivid motion clips in just a few clicks.",
             "icon": "RiImage2Line",
             "image": {
               "src": "/imgs/features/2.png",
@@ -114,7 +111,7 @@
           },
           {
             "title": "Fast Generation",
-            "description": "Generate high-quality videos in seconds, not hours. Powered by state-of-the-art AI infrastructure.",
+            "description": "Generate high-quality videos in seconds with optimized infrastructure.",
             "icon": "RiSpeedFill",
             "image": {
               "src": "/imgs/features/3.png",
@@ -122,8 +119,8 @@
             }
           },
           {
-            "title": "Wan 2.6 Technology",
-            "description": "Experience the latest breakthrough in AI video generation with our cutting-edge Wan 2.6 model.",
+            "title": "Seedance2 Model",
+            "description": "Experience the latest breakthrough in AI video generation with Seedance2.",
             "icon": "RiRobot2Line",
             "image": {
               "src": "/imgs/features/4.png",
@@ -136,9 +133,9 @@
       "benefits": {
         "block": "features-accordion",
         "id": "benefits",
-        "title": "Why Choose Wan Ai",
+        "title": "Why Choose Seedance2 AI",
         "label": "Benefits",
-        "description": "Experience the future of video creation with our cutting-edge AI technology.",
+        "description": "Create videos faster with cutting-edge Seedance2 technology.",
         "video": {
           "src": "/videos/demo1.mp4",
           "autoplay": true,
@@ -147,8 +144,8 @@
         },
         "items": [
           {
-            "title": "Latest Wan 2.6 Technology",
-            "description": "Powered by the state-of-the-art Wan 2.6 AI model, delivering superior video quality and generation speed.",
+            "title": "Latest Seedance2 Technology",
+            "description": "Powered by the newest Seedance2 model for superior motion and detail.",
             "icon": "RiRobot2Line",
             "image": {
               "src": "/imgs/features/user-billing.png",
@@ -157,7 +154,7 @@
           },
           {
             "title": "Multiple Generation Modes",
-            "description": "Support for both text-to-video and image-to-video generation, giving you creative flexibility.",
+            "description": "Support for text-to-video and image-to-video generation for flexible creation.",
             "icon": "RiClapperboardAiLine",
             "video": {
               "src": "/videos/gallery/1.mp4",
@@ -172,7 +169,7 @@
           },
           {
             "title": "Easy to Use",
-            "description": "Simple and intuitive interface designed for creators of all skill levels. No technical expertise required.",
+            "description": "A clean, intuitive workflow for creators of any level.",
             "icon": "RiMagicFill",
             "video": {
               "src": "/videos/gallery/2.mp4",
@@ -190,8 +187,8 @@
       "usage": {
         "block": "features-step",
         "id": "usage",
-        "title": "How to Create Videos with Wan Ai",
-        "description": "Generate stunning AI videos in three simple steps:",
+        "title": "Create Videos in 3 Simple Steps",
+        "description": "From prompt to video in minutes:",
         "image": {
           "src": "/imgs/features/1.png",
           "alt": "usage"
@@ -201,7 +198,7 @@
         "items": [
           {
             "title": "Choose Your Mode",
-            "description": "Select text-to-video to generate from prompts, or image-to-video to animate your images.",
+            "description": "Pick text-to-video or image-to-video based on your idea.",
             "image": {
               "src": "/imgs/features/5.png",
               "alt": "usage"
@@ -209,7 +206,7 @@
           },
           {
             "title": "Input Your Content",
-            "description": "Enter your text description or upload an image that you want to transform into video.",
+            "description": "Enter a prompt or upload an image to guide the generation.",
             "image": {
               "src": "/imgs/features/6.png",
               "alt": "usage"
@@ -217,7 +214,7 @@
           },
           {
             "title": "Generate & Download",
-            "description": "Click generate and watch as Wan 2.6 creates your video. Download and share your creation.",
+            "description": "Generate your video and download it for sharing.",
             "image": {
               "src": "/imgs/features/7.png",
               "alt": "usage"
@@ -228,70 +225,70 @@
       },
       "features": {
         "id": "features",
-        "title": "Key Features of Wan Ai",
-        "description": "Everything you need to create stunning AI-generated videos.",
+        "title": "Key Features of Seedance2 AI",
+        "description": "Everything you need to create AI-generated videos.",
         "items": [
           {
             "title": "Text to Video",
-            "description": "Transform your text descriptions into beautiful, high-quality videos using AI.",
+            "description": "Turn text descriptions into videos with realistic motion.",
             "icon": "RiVideoLine"
           },
           {
             "title": "Image to Video",
-            "description": "Animate your images and bring them to life with our advanced AI technology.",
+            "description": "Animate still images into smooth, cinematic clips.",
             "icon": "RiImage2Line"
           },
           {
-            "title": "Wan 2.6 Powered",
-            "description": "Experience the latest in AI video generation with our cutting-edge Wan 2.6 model.",
+            "title": "Seedance2 Powered",
+            "description": "Use the latest Seedance2 model for higher fidelity results.",
             "icon": "RiRobot2Line"
           },
           {
             "title": "Fast Generation",
-            "description": "Generate videos in seconds, not minutes. Our optimized infrastructure ensures speed.",
+            "description": "Generate videos quickly with optimized pipelines.",
             "icon": "RiSpeedFill"
           },
           {
             "title": "High Quality Output",
-            "description": "Produces high-resolution videos with smooth motion and stunning visual quality.",
+            "description": "Produce high-resolution videos with smooth motion.",
             "icon": "RiHdFill"
           },
           {
             "title": "Easy to Use",
-            "description": "Simple and intuitive interface designed for creators of all skill levels.",
+            "description": "Simple, creator-friendly workflow.",
             "icon": "RiUserHeartFill"
           }
         ]
       },
       "stats": {
         "id": "stats",
-        "title": "People Love Wan Ai",
-        "description": "for its powerful AI video generation capabilities.",
+        "title": "People Love Seedance2 AI",
+        "description": "For its speed and visual quality.",
         "items": [
           {
-            "title": "10K+",
-            "description": "Videos Created"
+            "title": "Seconds",
+            "description": "Generation Time"
           },
           {
-            "title": "5K+",
-            "description": "Active Users"
+            "title": "HD",
+            "description": "Video Output"
           },
           {
-            "title": "99%",
-            "description": "Satisfaction"
+            "title": "Dual Mode",
+            "description": "Text + Image"
           }
         ],
         "className": "bg-muted"
       },
       "testimonials": {
         "id": "testimonials",
-        "title": "What Users Say About Wan Ai",
-        "description": "Hear from creators who are using Wan Ai to bring their visions to life.",
+        "title": "What Users Say About Seedance2 AI",
+        "description": "Creators are turning ideas into videos with Seedance2 AI.",
         "items": [
           {
             "name": "Alex Turner",
             "role": "Content Creator",
-            "quote": "Wan Ai is incredible! I can now create professional videos for my social media in minutes. The text-to-video feature is a game-changer for my content workflow.",
+            "quote": "Seedance2 AI is incredible! I can now create professional videos for my social media in minutes. The text-to-video feature is a game-changer for my content workflow.",
             "image": {
               "src": "/imgs/avatars/1.png",
               "alt": "alex"
@@ -300,7 +297,7 @@
           {
             "name": "Maria Rodriguez",
             "role": "Marketing Director",
-            "quote": "The image-to-video feature helped us bring our product photos to life. Our engagement increased by 300% after using Wan Ai for our campaigns.",
+            "quote": "The image-to-video feature helped us bring our product photos to life. Our engagement increased after using Seedance2 AI for our campaigns.",
             "image": {
               "src": "/imgs/avatars/2.png",
               "alt": "maria"
@@ -309,7 +306,7 @@
           {
             "name": "James Liu",
             "role": "YouTuber",
-            "quote": "As a content creator, time is everything. Wan Ai's fast generation means I can produce more videos in less time. The Wan 2.6 technology is amazing!",
+            "quote": "As a content creator, time is everything. Seedance2 AI's fast generation means I can produce more videos in less time. The Seedance2 model is amazing!",
             "image": {
               "src": "/imgs/avatars/3.png",
               "alt": "james"
@@ -318,7 +315,7 @@
           {
             "name": "Sophie Chen",
             "role": "Small Business Owner",
-            "quote": "I have no video editing experience, but Wan Ai made it so easy. Now I can create promotional videos for my business without hiring expensive professionals.",
+            "quote": "I have no video editing experience, but Seedance2 AI made it so easy. Now I can create promotional videos without hiring expensive professionals.",
             "image": {
               "src": "/imgs/avatars/4.png",
               "alt": "sophie"
@@ -327,7 +324,7 @@
           {
             "name": "Michael Brown",
             "role": "Digital Marketer",
-            "quote": "The video quality from Wan 2.6 is outstanding. Our clients are always amazed when we tell them these videos are AI-generated.",
+            "quote": "The video quality from Seedance2 is outstanding. Our clients are always amazed when we tell them these videos are AI-generated.",
             "image": {
               "src": "/imgs/avatars/5.png",
               "alt": "michael"
@@ -336,7 +333,7 @@
           {
             "name": "Emma Zhang",
             "role": "Freelance Designer",
-            "quote": "Wan Ai has become an essential tool in my design workflow. It helps me quickly visualize concepts and present video ideas to clients.",
+            "quote": "Seedance2 AI has become an essential tool in my design workflow. It helps me quickly visualize concepts and present video ideas to clients.",
             "image": {
               "src": "/imgs/avatars/6.png",
               "alt": "emma"
@@ -346,39 +343,39 @@
       },
       "faq": {
         "id": "faq",
-        "title": "Frequently Asked Questions About Wan Ai",
+        "title": "Frequently Asked Questions About Seedance2 AI",
         "description": "Have another question? Contact us at zyrliuwei@gmail.com",
         "items": [
           {
-            "question": "What is Wan Ai and how does it work?",
-            "answer": "Wan Ai is a one-stop AI video generation platform powered by the latest Wan 2.6 technology. Simply input your text description or upload an image, and our AI will generate a stunning video for you in seconds."
+            "question": "What is Seedance2 AI and how does it work?",
+            "answer": "Seedance2 AI is an AI video generation platform powered by the latest Seedance2 model. Enter a text prompt or upload an image, and the AI will generate a video in seconds."
           },
           {
             "question": "What video generation modes are supported?",
-            "answer": "Wan Ai supports two main modes: Text to Video, where you describe the video you want in words, and Image to Video, where you upload an image and our AI brings it to life with motion and animation."
+            "answer": "Seedance2 AI supports two main modes: Text to Video and Image to Video."
           },
           {
             "question": "How long does it take to generate a video?",
-            "answer": "Video generation typically takes just a few seconds to a couple of minutes, depending on the length and complexity of your video. Our optimized Wan 2.6 model ensures fast processing without sacrificing quality."
+            "answer": "Generation typically takes seconds to a few minutes depending on the length and complexity of the video."
           },
           {
-            "question": "What is Wan 2.6 technology?",
-            "answer": "Wan 2.6 is our state-of-the-art AI video generation model. It represents the latest breakthrough in AI video synthesis, delivering superior quality, realistic motion, and faster generation speeds."
+            "question": "What is the Seedance2 model?",
+            "answer": "Seedance2 is the latest AI video generation model powering the platform, delivering better motion, detail, and realism."
           },
           {
-            "question": "Do I need video editing experience to use Wan Ai?",
-            "answer": "Not at all! Wan Ai is designed for everyone, regardless of technical skill level. Our intuitive interface makes it easy for anyone to create professional-quality videos with just a few clicks."
+            "question": "Do I need video editing experience to use Seedance2 AI?",
+            "answer": "No. Seedance2 AI is designed for creators of all skill levels with a simple, guided workflow."
           },
           {
             "question": "What can I use the generated videos for?",
-            "answer": "You can use your generated videos for social media content, marketing materials, product showcases, creative projects, educational content, and much more. The possibilities are endless!"
+            "answer": "Use them for social media, marketing, product demos, creative projects, education, and more."
           }
         ]
       },
       "cta": {
         "id": "cta",
-        "title": "Start Creating Amazing Videos Today",
-        "description": "Join thousands of creators using Wan Ai powered by Wan 2.6.",
+        "title": "Start Creating Videos Today",
+        "description": "Experience the latest Seedance2 AI video generation.",
         "buttons": [
           {
             "title": "Start Creating",
@@ -387,8 +384,8 @@
             "icon": "Zap"
           },
           {
-            "title": "Visit wan2-6.art",
-            "url": "https://wan2-6.art",
+            "title": "Visit ai-seedance2.art",
+            "url": "https://ai-seedance2.art",
             "target": "_blank",
             "variant": "outline",
             "icon": "RiExternalLinkLine"
@@ -399,7 +396,7 @@
       "subscribe": {
         "id": "subscribe",
         "title": "Subscribe to our newsletter",
-        "description": "Get the latest news and updates about Wan Ai and Wan 2.6.",
+        "description": "Get the latest news and updates about Seedance2 AI.",
         "submit": {
           "input": {
             "placeholder": "Enter your email"

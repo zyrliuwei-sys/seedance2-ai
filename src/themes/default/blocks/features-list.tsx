@@ -2,7 +2,12 @@
 
 import { Link } from '@/core/i18n/navigation';
 import { LazyImage, SmartIcon } from '@/shared/blocks/common';
-import { Button } from '@/shared/components/ui/button';
+import { AnimatedGradientText } from '@/shared/components/ui/animated-gradient-text';
+import { MagicCard } from '@/shared/components/ui/magic-card';
+import { ProgressiveBlur } from '@/shared/components/ui/progressive-blur';
+import { ShimmerButton } from '@/shared/components/ui/shimmer-button';
+import { BorderBeam } from '@/shared/components/magicui/border-beam';
+import { Ripple } from '@/shared/components/magicui/ripple';
 import { ScrollAnimation } from '@/shared/components/ui/scroll-animation';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
@@ -15,19 +20,26 @@ export function FeaturesList({
   className?: string;
 }) {
   return (
-    // Prevent horizontal scrolling
     <section
-      className={cn(
-        'relative py-20 md:py-28',
-        section.className,
-        className
-      )}
+      className={cn('relative py-20 md:py-28 bg-[#050608]', section.className, className)}
     >
-      <div className="container">
+      <div className="absolute inset-0 pointer-events-none">
+        <Ripple className="opacity-10" mainCircleSize={220} />
+        <div className="absolute -top-20 right-0 h-72 w-72 rounded-full bg-emerald-500/10 blur-[120px]" />
+      </div>
+
+      <div className="container relative">
         <div className="grid gap-10 pb-12 md:grid-cols-[1.1fr_0.9fr] md:items-stretch md:gap-16">
           <ScrollAnimation direction="left">
-            <div className="relative mx-auto w-full max-w-[640px] h-full">
-              <div className="relative h-full overflow-hidden rounded-[24px] border border-white/10 shadow-[0_30px_80px_rgba(10,15,35,0.45)]">
+            <MagicCard
+              className="relative mx-auto w-full max-w-[640px] h-full overflow-hidden rounded-[28px] border border-white/10 bg-[#0b0f12]/80"
+              gradientFrom="#34d399"
+              gradientTo="#38bdf8"
+              gradientOpacity={0.2}
+              gradientSize={240}
+            >
+              <BorderBeam size={120} duration={8} colorFrom="#34d399" colorTo="#38bdf8" />
+              <div className="relative h-full overflow-hidden rounded-[24px]">
                 {section.video ? (
                   <video
                     src={section.video.src}
@@ -45,20 +57,33 @@ export function FeaturesList({
                     className="h-full w-full object-cover"
                   />
                 )}
+                <ProgressiveBlur direction="bottom" blurLayers={10} blurIntensity={0.35} />
               </div>
-            </div>
+            </MagicCard>
           </ScrollAnimation>
-          <div className="w-full min-w-0 h-full rounded-2xl border border-white/10 p-7 shadow-[0_24px_70px_rgba(10,15,35,0.35)] backdrop-blur-sm md:p-10">
+
+          <MagicCard
+            className="w-full min-w-0 h-full rounded-2xl border border-white/10 bg-[#0b0f12]/80 p-7 md:p-10"
+            gradientFrom="#34d399"
+            gradientTo="#fbbf24"
+            gradientOpacity={0.15}
+            gradientSize={220}
+          >
             <ScrollAnimation delay={0.1}>
-              <p className="text-xs uppercase tracking-[0.35em] text-foreground/50">
-                Overview
-              </p>
-              <h2 className="mt-4 text-balance text-4xl font-semibold text-foreground md:text-5xl">
+              <AnimatedGradientText
+                speed={1.4}
+                colorFrom="#34d399"
+                colorTo="#38bdf8"
+                className="text-xs uppercase tracking-[0.35em]"
+              >
+                Seedance2 AI Overview
+              </AnimatedGradientText>
+              <h2 className="mt-4 text-balance text-4xl font-semibold text-white md:text-5xl">
                 {section.title}
               </h2>
             </ScrollAnimation>
             <ScrollAnimation delay={0.2}>
-              <p className="mt-5 text-base text-muted-foreground md:text-lg">
+              <p className="mt-5 text-base text-white/65 md:text-lg">
                 {section.description}
               </p>
             </ScrollAnimation>
@@ -67,56 +92,57 @@ export function FeaturesList({
               <ScrollAnimation delay={0.3}>
                 <div className="mt-6 flex flex-wrap items-center justify-start gap-3">
                   {section.buttons?.map((button, idx) => (
-                    <Button
-                      asChild
+                    <Link
                       key={idx}
-                      variant={button.variant || 'default'}
-                      size={button.size || 'default'}
+                      href={button.url ?? ''}
+                      target={button.target ?? '_self'}
+                      className="inline-flex"
                     >
-                      <Link
-                        href={button.url ?? ''}
-                        target={button.target ?? '_self'}
-                        className={cn(
-                          'focus-visible:ring-ring inline-flex items-center justify-center gap-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
-                          'h-10 px-6',
-                          'bg-background ring-foreground/10 hover:bg-muted/50 dark:ring-foreground/15 dark:hover:bg-muted/50 border border-transparent shadow-sm ring-1 shadow-black/15 duration-200'
-                        )}
+                      <ShimmerButton
+                        className="h-10 px-5 text-sm font-semibold"
+                        shimmerColor="#9ff3d0"
+                        background="rgba(5, 6, 8, 0.9)"
                       >
-                        {button.icon && (
-                          <SmartIcon name={button.icon as string} size={20} />
-                        )}
-                        {button.title}
-                      </Link>
-                    </Button>
+                        <span className="flex items-center gap-2">
+                          {button.icon && (
+                            <SmartIcon name={button.icon as string} size={18} />
+                          )}
+                          {button.title}
+                        </span>
+                      </ShimmerButton>
+                    </Link>
                   ))}
                 </div>
               </ScrollAnimation>
             )}
-          </div>
+          </MagicCard>
         </div>
 
         <ScrollAnimation delay={0.1}>
-          {/* Prevent horizontal scrolling, min-w-0 and break-words */}
           <div className="relative grid min-w-0 grid-cols-1 gap-4 pt-10 break-words sm:grid-cols-2 lg:grid-cols-4">
             {section.items?.map((item, idx) => (
-              <div
-                className="min-w-0 space-y-3 rounded-2xl border border-white/10 p-5 shadow-[0_20px_50px_rgba(10,15,35,0.35)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
+              <MagicCard
                 key={idx}
+                className="min-w-0 rounded-2xl border border-white/10 bg-[#0b0f12]/80 p-5"
+                gradientFrom="#34d399"
+                gradientTo="#38bdf8"
+                gradientOpacity={0.12}
+                gradientSize={160}
               >
                 <div className="flex min-w-0 items-center gap-2">
                   {item.icon && (
-                    <div className="flex size-8 items-center justify-center rounded-lg text-white">
-                      <SmartIcon name={item.icon as string} size={16} />
+                    <div className="flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+                      <SmartIcon name={item.icon as string} size={16} className="text-emerald-200" />
                     </div>
                   )}
                   <h3 className="min-w-0 text-sm font-semibold break-words text-white">
                     {item.title}
                   </h3>
                 </div>
-                <p className="min-w-0 text-sm text-white/70 break-words">
+                <p className="mt-3 min-w-0 text-sm text-white/60 break-words">
                   {item.description ?? ''}
                 </p>
-              </div>
+              </MagicCard>
             ))}
           </div>
         </ScrollAnimation>

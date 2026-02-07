@@ -78,8 +78,8 @@ export function Footer({ footer }: { footer: FooterType }) {
           </div>
 
           <div className="md:col-span-1">
-            <h4 className="text-sm font-semibold text-white">Stay in the loop</h4>
-            <p className="mt-2 text-sm text-muted-foreground">Subscribe to get product updates and news.</p>
+            <h4 className="text-sm font-semibold text-white">Stay Updated with Seedance2 AI</h4>
+            <p className="mt-2 text-sm text-muted-foreground">Subscribe to get the latest Seedance2 AI updates and news.</p>
 
             <form
               className="mt-4 flex gap-2"
