@@ -482,15 +482,29 @@ export function VideoGenerator({
   }, [taskId, isGenerating, pollTaskStatus]);
 
   const handleGenerate = async () => {
-    if (!user) {
-      setSignModalMessage('Sign in now to get 1 free video generation!');
-      setIsShowSignModal(true);
-      return;
-    }
+    // Check if anonymous user has used their free video generation
+    const FREE_VIDEO_KEY = 'seedance2_free_video_used';
+    const hasUsedFreeVideo = typeof window !== 'undefined' && localStorage.getItem(FREE_VIDEO_KEY) === 'true';
 
-    if (remainingCredits < costCredits) {
-      router.push('/pricing');
-      return;
+    if (!user) {
+      // First time: allow free generation without login
+      if (!hasUsedFreeVideo) {
+        // Mark free video as used
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(FREE_VIDEO_KEY, 'true');
+        }
+      } else {
+        // Subsequent attempts: require login
+        setSignModalMessage("You've used your free video generation! Sign in to continue generating more videos.");
+        setIsShowSignModal(true);
+        return;
+      }
+    } else {
+      // Logged in users: check credits
+      if (remainingCredits < costCredits) {
+        router.push('/pricing');
+        return;
+      }
     }
 
     const trimmedPrompt = prompt.trim();
