@@ -40,7 +40,7 @@ export function Cta({
                 colorTo="#fbbf24"
                 className="text-xs uppercase tracking-[0.35em]"
               >
-                Seedance2 AI
+                Launch
               </AnimatedGradientText>
               <h2 className="mt-4 text-4xl font-semibold text-balance text-white md:text-5xl">
                 {section.title}

@@ -37,7 +37,7 @@ export function Features({
                 colorTo="#38bdf8"
                 className="text-xs uppercase tracking-[0.35em]"
               >
-                Seedance2 Features
+                Features
               </AnimatedGradientText>
             </div>
             <h2 className="text-white mb-5 text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">

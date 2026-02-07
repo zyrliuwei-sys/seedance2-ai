@@ -81,7 +81,7 @@ export function Testimonials({
             colorTo="#38bdf8"
             className="text-xs uppercase tracking-[0.35em]"
           >
-            Seedance2 AI
+            Voices
           </AnimatedGradientText>
           <h2 className="mt-4 text-4xl font-semibold text-white md:text-5xl">
             {section.title}

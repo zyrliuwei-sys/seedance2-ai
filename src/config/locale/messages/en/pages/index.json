@@ -392,21 +392,6 @@
           }
         ],
         "className": "bg-muted"
-      },
-      "subscribe": {
-        "id": "subscribe",
-        "title": "Subscribe to our newsletter",
-        "description": "Get the latest news and updates about Seedance2 AI.",
-        "submit": {
-          "input": {
-            "placeholder": "Enter your email"
-          },
-          "button": {
-            "title": "Subscribe"
-          },
-          "action": "/api/subscribe"
-        },
-        "className": "bg-muted"
       }
     }
   }
