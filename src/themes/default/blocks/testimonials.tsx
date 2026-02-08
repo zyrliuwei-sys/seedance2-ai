@@ -63,7 +63,7 @@ export function Testimonials({
     <section
       id={section.id}
       className={cn(
-        'relative overflow-hidden py-16 md:py-20 bg-[#050608]',
+        'relative overflow-hidden py-16 md:py-20 bg-[#1a1d20]',
         section.className,
         className
       )}

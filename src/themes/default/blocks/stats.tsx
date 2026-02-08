@@ -30,8 +30,13 @@ export function Stats({
   return (
     <section
       id={section.id}
-      className={cn('relative py-16 md:py-24 bg-[#000000]', section.className, className)}
+      className={cn('relative overflow-hidden py-16 md:py-24', section.className, className)}
     >
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(2,6,23,0.96),rgba(2,6,23,0.92)_40%,rgba(8,47,73,0.92))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_10%_20%,rgba(16,185,129,0.25),transparent_60%),radial-gradient(900px_500px_at_90%_10%,rgba(56,189,248,0.25),transparent_55%),radial-gradient(800px_600px_at_50%_90%,rgba(251,191,36,0.18),transparent_60%)]" />
+        <div className="absolute inset-0 opacity-35 mix-blend-soft-light bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.035)_0,rgba(255,255,255,0.035)_1px,transparent_1px,transparent_3px),repeating-linear-gradient(90deg,rgba(255,255,255,0.02)_0,rgba(255,255,255,0.02)_1px,transparent_1px,transparent_4px)]" />
+      </div>
       <div className="container">
         <ScrollAnimation>
           <div className="relative z-10 mx-auto max-w-xl space-y-6 text-center">
