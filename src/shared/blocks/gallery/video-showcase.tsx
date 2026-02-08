@@ -112,45 +112,94 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
   return (
     <section
       className={cn(
-        'relative overflow-hidden bg-slate-950 py-24 md:py-32',
+        'relative overflow-hidden bg-[#0b0b10] py-20 md:py-28',
         className
       )}
     >
       {/* Background Effects */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(1100px_circle_at_10%_10%,rgba(251,191,36,0.12),transparent_60%),radial-gradient(900px_circle_at_90%_0%,rgba(34,211,238,0.1),transparent_55%),radial-gradient(900px_circle_at_20%_90%,rgba(236,72,153,0.12),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.04),transparent_40%,rgba(255,255,255,0.02))]" />
+        <div className="absolute left-1/2 top-0 h-px w-[80%] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 mb-4 rounded-full bg-purple-500/10 border border-purple-500/20 px-4 py-1.5 text-sm">
-            <Sparkles className="size-3.5 text-purple-400" />
-            <span className="text-purple-300 font-medium">AI Video Gallery</span>
+        <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] uppercase tracking-[0.35em] text-white/70">
+              <Sparkles className="size-3.5 text-amber-300" />
+              AI Video Gallery
+            </div>
+            <h2 className="mt-5 text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-white">
+              Cinematic scenes, full frame
+            </h2>
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-br from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mb-4">
-            Explore What's Possible
-          </h2>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            See what our community has created with AI. Hover over any video to preview.
-          </p>
+          <Button
+            size="lg"
+            className="bg-gradient-to-r from-amber-500 to-cyan-500 hover:from-amber-600 hover:to-cyan-600 text-black"
+            onClick={() => {
+              document.getElementById('wan-generator')?.scrollIntoView({
+                behavior: 'smooth',
+              });
+            }}
+          >
+            <Sparkles className="mr-2 size-5" />
+            Start Creating
+          </Button>
+        </div>
+
+        {/* Featured */}
+        <div className="mb-10">
+          <div className="relative overflow-hidden rounded-none border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/0 shadow-[0_40px_120px_rgba(0,0,0,0.45)]">
+            <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
+              <video
+                key="featured-video"
+                src={cases[0]?.video}
+                autoPlay
+                loop
+                playsInline
+                muted
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.35em] text-white/60">
+                    Featured Scene
+                  </p>
+                  <h3 className="mt-2 text-2xl md:text-3xl font-semibold text-white">
+                    {cases[0]?.title}
+                  </h3>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-9 px-4 text-amber-200 hover:text-amber-100 hover:bg-white/10"
+                  onClick={() => handleUsePrompt(cases[0]?.prompt)}
+                >
+                  Use Prompt
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Video Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {cases.map((videoCase) => (
             <div
               key={videoCase.id}
-              className="group relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 overflow-hidden shadow-xl"
+              className="group relative overflow-hidden rounded-none border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/0 shadow-[0_30px_90px_rgba(0,0,0,0.45)]"
               onMouseEnter={() => {
                 setHoveredId(videoCase.id);
                 setMounted(true);
               }}
               onMouseLeave={() => setHoveredId(null)}
+              onClick={() => handleUsePrompt(videoCase.prompt)}
             >
               {/* Video Thumbnail */}
-              <div className="aspect-video relative bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
+              <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
                 {hoveredId === videoCase.id && mounted ? (
                   <video
                     key={`playing-${videoCase.id}`}
@@ -188,13 +237,13 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                       }}
                     />
                     {/* Play Button Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors pointer-events-none">
-                      <div className="relative flex size-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm border border-white/30 transition-transform group-hover:scale-110">
-                        <Play className="size-6 text-white fill-white ml-0.5" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/25 group-hover:bg-black/10 transition-colors pointer-events-none">
+                      <div className="relative flex size-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm border border-white/30 transition-transform group-hover:scale-110">
+                        <Play className="size-7 text-white fill-white ml-0.5" />
                       </div>
                     </div>
                     {/* Sound Indicator */}
-                    <div className="absolute top-3 right-3 pointer-events-none">
+                    <div className="absolute top-4 right-4 pointer-events-none">
                       <div className="flex items-center gap-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 px-2.5 py-1 text-xs font-medium text-white">
                         <Volume2 className="size-3" />
                         <span>Sound</span>
@@ -204,7 +253,10 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                 )}
 
                 {/* Placeholder (shown when video not available) */}
-                <div className="placeholder-content absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900" style={{ display: 'none' }}>
+                <div
+                  className="placeholder-content absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900"
+                  style={{ display: 'none' }}
+                >
                   <div className="text-center p-4">
                     <Play className="mx-auto mb-2 size-10 text-white/30" />
                     <p className="text-sm text-white/40">Video coming soon</p>
@@ -216,55 +268,23 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                 )}
 
-                {/* Category Badge */}
-                <div className="absolute top-3 left-3 z-10 pointer-events-none">
-                  <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 text-xs font-medium text-white">
-                    {videoCase.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {videoCase.title}
-                </h3>
-                <p className="text-sm text-gray-400 line-clamp-3 mb-3">
-                  {videoCase.prompt}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-500">
-                    {videoCase.duration} • {videoCase.aspectRatio}
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 text-purple-300 hover:text-purple-200 hover:bg-white/10"
-                    onClick={() => handleUsePrompt(videoCase.prompt)}
-                  >
-                    Use Prompt
-                  </Button>
+                {/* Title + Category */}
+                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.35em] text-white/60">
+                      {videoCase.category}
+                    </p>
+                    <h3 className="mt-2 text-xl md:text-2xl font-semibold text-white">
+                      {videoCase.title}
+                    </h3>
+                  </div>
+                  <div className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
+                    {videoCase.duration}
+                  </div>
                 </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* CTA */}
-        <div className="mt-16 text-center">
-          <p className="text-gray-400 mb-4">Ready to create your own?</p>
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-            onClick={() => {
-              document.getElementById('wan-generator')?.scrollIntoView({
-                behavior: 'smooth',
-              });
-            }}
-          >
-            <Sparkles className="mr-2 size-5" />
-            Start Creating
-          </Button>
         </div>
       </div>
     </section>

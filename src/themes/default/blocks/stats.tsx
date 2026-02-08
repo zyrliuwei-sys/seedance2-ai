@@ -30,7 +30,7 @@ export function Stats({
   return (
     <section
       id={section.id}
-      className={cn('relative py-16 md:py-24 bg-[#050608]', section.className, className)}
+      className={cn('relative py-16 md:py-24 bg-[#000000]', section.className, className)}
     >
       <div className="container">
         <ScrollAnimation>

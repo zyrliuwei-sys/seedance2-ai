@@ -13,10 +13,10 @@
     "sections": {
       "hero": {
         "id": "hero",
-        "title": "Create Videos with Seedance2 AI",
-        "highlight_text": "Seedance2 AI",
-        "description": "Seedance2 AI is an AI video generation platform featuring the latest Seedance2 capabilities.<br/>Create videos from text prompts or images in seconds.",
-        "tip": "✨ Supports text-to-video and image-to-video",
+        "title": "Direct Your Next Scene with Seedance2 AI",
+        "highlight_text": "From prompt to cinematic motion",
+        "description": "Seedance2 AI turns a line of text or a single image into a polished video clip.<br/>Generate, iterate, and refine in minutes.",
+        "tip": "✨ No credit card required · Start free",
         "show_avatars": false,
         "avatars_tip": "Creators are using Seedance2 AI",
         "show_award": false,
