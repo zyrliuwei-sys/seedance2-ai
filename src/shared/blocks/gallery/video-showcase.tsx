@@ -149,48 +149,12 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
           </Button>
         </div>
 
-        {/* Featured */}
-        <div className="mb-10">
-          <div className="relative overflow-hidden rounded-none border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/0 shadow-[0_40px_120px_rgba(0,0,0,0.45)]">
-            <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
-              <video
-                key="featured-video"
-                src={cases[0]?.video}
-                autoPlay
-                loop
-                playsInline
-                muted
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.35em] text-white/60">
-                    Featured Scene
-                  </p>
-                  <h3 className="mt-2 text-2xl md:text-3xl font-semibold text-white">
-                    {cases[0]?.title}
-                  </h3>
-                </div>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="h-9 px-4 text-amber-200 hover:text-amber-100 hover:bg-white/10"
-                  onClick={() => handleUsePrompt(cases[0]?.prompt)}
-                >
-                  Use Prompt
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Video Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cases.map((videoCase) => (
             <div
               key={videoCase.id}
-              className="group relative overflow-hidden rounded-none border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/0 shadow-[0_30px_90px_rgba(0,0,0,0.45)]"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/0 shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
               onMouseEnter={() => {
                 setHoveredId(videoCase.id);
                 setMounted(true);
@@ -199,7 +163,7 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
               onClick={() => handleUsePrompt(videoCase.prompt)}
             >
               {/* Video Thumbnail */}
-              <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
+              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
                 {hoveredId === videoCase.id && mounted ? (
                   <video
                     key={`playing-${videoCase.id}`}
@@ -238,13 +202,13 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                     />
                     {/* Play Button Overlay */}
                     <div className="absolute inset-0 flex items-center justify-center bg-black/25 group-hover:bg-black/10 transition-colors pointer-events-none">
-                      <div className="relative flex size-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm border border-white/30 transition-transform group-hover:scale-110">
-                        <Play className="size-7 text-white fill-white ml-0.5" />
+                      <div className="relative flex size-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm border border-white/30 transition-transform group-hover:scale-110">
+                        <Play className="size-6 text-white fill-white ml-0.5" />
                       </div>
                     </div>
                     {/* Sound Indicator */}
                     <div className="absolute top-4 right-4 pointer-events-none">
-                      <div className="flex items-center gap-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 px-2.5 py-1 text-xs font-medium text-white">
+                      <div className="flex items-center gap-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 px-2.5 py-1 text-[10px] font-medium text-white">
                         <Volume2 className="size-3" />
                         <span>Sound</span>
                       </div>
@@ -267,21 +231,19 @@ export function VideoShowcase({ className }: VideoShowcaseProps) {
                 {hoveredId === videoCase.id && mounted && (
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                 )}
-
-                {/* Title + Category */}
-                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.35em] text-white/60">
-                      {videoCase.category}
-                    </p>
-                    <h3 className="mt-2 text-xl md:text-2xl font-semibold text-white">
-                      {videoCase.title}
-                    </h3>
-                  </div>
-                  <div className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/70">
-                    {videoCase.duration}
-                  </div>
+              </div>
+              {/* Meta */}
+              <div className="space-y-3 px-5 py-4">
+                <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.35em] text-white/50">
+                  <span>{videoCase.category}</span>
+                  <span>{videoCase.duration}</span>
                 </div>
+                <h3 className="text-lg font-semibold text-white">
+                  {videoCase.title}
+                </h3>
+                <p className="text-sm text-white/60 line-clamp-2">
+                  {videoCase.prompt}
+                </p>
               </div>
             </div>
           ))}
