@@ -233,8 +233,6 @@ export function VideoGenerator({
   const [downloadingVideoId, setDownloadingVideoId] = useState<string | null>(
     null
   );
-  const [isMounted, setIsMounted] = useState(false);
-
   const {
     user,
     isCheckSign,
@@ -242,10 +240,6 @@ export function VideoGenerator({
     setSignModalMessage,
     fetchUserCredits,
   } = useAppContext();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const promptLength = prompt.trim().length;
   const remainingCredits = user?.credits?.remainingCredits ?? 0;
@@ -754,12 +748,7 @@ export function VideoGenerator({
                       className="min-h-32 pr-32"
                     />
                     <div className="absolute bottom-2 right-2">
-                      {!isMounted ? (
-                        <Button disabled size="sm">
-                          <Loader2 className="mr-1 h-3 w-3 animate-spin" />
-                          {t('loading')}
-                        </Button>
-                      ) : isCheckSign ? (
+                      {isCheckSign ? (
                         <Button disabled size="sm">
                           <Loader2 className="mr-1 h-3 w-3 animate-spin" />
                           {t('checking_account')}
@@ -805,23 +794,14 @@ export function VideoGenerator({
                   </div>
                 </div>
 
-                {!isMounted ? (
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-primary">
-                      {t('credits_cost', { credits: costCredits })}
-                    </span>
-                    <span>{t('credits_remaining', { credits: 0 })}</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-primary">
-                      {t('credits_cost', { credits: costCredits })}
-                    </span>
-                    <span>
-                      {t('credits_remaining', { credits: remainingCredits })}
-                    </span>
-                  </div>
-                )}
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-primary">
+                    {t('credits_cost', { credits: costCredits })}
+                  </span>
+                  <span>
+                    {t('credits_remaining', { credits: remainingCredits })}
+                  </span>
+                </div>
 
                 {isGenerating && (
                   <div className="space-y-2 rounded-lg border p-4">

@@ -1,21 +1,31 @@
 /**
- * Evolink Wan 2.6 AI Video Generation API
- * API Documentation: https://evolink.ai/wan-2-6
+ * Evolink AI Video Generation API
+ * Models:
+ * - Wan 2.6: https://evolink.ai/wan-2-6
+ * - Seedance 1.5 Pro: https://evolink.ai/seedance-1-5-pro
  */
 
 interface EvolinkVideoGenerationRequest {
-  model: 'wan2.6-text-to-video' | 'wan2.6-image-to-video';
+  model: 'wan2.6-text-to-video' | 'wan2.6-image-to-video' | 'seedance-1.5-pro';
   prompt: string;
-  aspect_ratio?: '16:9' | '9:16' | '1:1' | '4:3' | '3:4';
-  quality?: '720p' | '1080p';
-  duration?: 5 | 10 | 15;
+
+  // Common parameters
+  aspect_ratio?: '16:9' | '9:16' | '1:1' | '4:3' | '3:4' | '21:9' | 'adaptive';
+  quality?: '480p' | '720p' | '1080p';
+  duration?: number; // 4-12 for seedance-1.5-pro, 5/10/15 for wan2.6
+  callback_url?: string;
+
+  // Wan 2.6 specific
   prompt_extend?: boolean;
   model_params?: {
     shot_type?: 'single' | 'multi';
   };
   audio_url?: string;
-  callback_url?: string;
-  image_url?: string; // For image-to-video
+  image_url?: string; // For wan2.6 image-to-video
+
+  // Seedance 1.5 Pro specific
+  image_urls?: string[]; // Array of 1-2 images for seedance-1.5-pro
+  generate_audio?: boolean;
 }
 
 interface EvolinkVideoGenerationResponse {
@@ -348,7 +358,7 @@ class EvolinkAPI {
   }
 
   /**
-   * Image to Video
+   * Image to Video (Wan 2.6)
    */
   async imageToVideo(params: {
     imageUrl: string;
@@ -373,6 +383,52 @@ class EvolinkAPI {
         shot_type: params.shotType || 'single',
       },
       audio_url: params.audioUrl,
+      callback_url: params.callbackUrl,
+    });
+  }
+
+  /**
+   * Seedance 1.5 Pro - Text to Video
+   */
+  async seedanceTextToVideo(params: {
+    prompt: string;
+    duration?: number; // 4-12 seconds
+    quality?: '480p' | '720p' | '1080p';
+    aspectRatio?: '16:9' | '9:16' | '1:1' | '4:3' | '3:4' | '21:9' | 'adaptive';
+    generateAudio?: boolean;
+    callbackUrl?: string;
+  }): Promise<EvolinkVideoGenerationResponse> {
+    return this.createVideoGeneration({
+      model: 'seedance-1.5-pro',
+      prompt: params.prompt,
+      duration: params.duration || 5,
+      quality: params.quality || '720p',
+      aspect_ratio: params.aspectRatio || '16:9',
+      generate_audio: params.generateAudio !== false,
+      callback_url: params.callbackUrl,
+    });
+  }
+
+  /**
+   * Seedance 1.5 Pro - Image to Video
+   */
+  async seedanceImageToVideo(params: {
+    prompt: string;
+    imageUrls: string[]; // 1-2 images
+    duration?: number; // 4-12 seconds
+    quality?: '480p' | '720p' | '1080p';
+    aspectRatio?: '16:9' | '9:16' | '1:1' | '4:3' | '3:4' | '21:9' | 'adaptive';
+    generateAudio?: boolean;
+    callbackUrl?: string;
+  }): Promise<EvolinkVideoGenerationResponse> {
+    return this.createVideoGeneration({
+      model: 'seedance-1.5-pro',
+      prompt: params.prompt,
+      image_urls: params.imageUrls,
+      duration: params.duration || 5,
+      quality: params.quality || '720p',
+      aspect_ratio: params.aspectRatio || '16:9',
+      generate_audio: params.generateAudio !== false,
       callback_url: params.callbackUrl,
     });
   }
