@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 
 import { cn } from "@/shared/lib/utils"
 
@@ -23,11 +23,14 @@ export const Meteors = ({
   angle = 215,
   className,
 }: MeteorsProps) => {
-  const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>(
-    []
-  )
+  const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>([])
+  const initializedRef = useRef(false)
 
   useEffect(() => {
+    // Only initialize once to prevent flickering
+    if (initializedRef.current) return
+    initializedRef.current = true
+
     const styles = [...new Array(number)].map(() => ({
       "--angle": -angle + "deg",
       top: "-5%",
@@ -42,7 +45,7 @@ export const Meteors = ({
 
   return (
     <>
-      {[...meteorStyles].map((style, idx) => (
+      {meteorStyles.map((style, idx) => (
         // Meteor Head
         <span
           key={idx}

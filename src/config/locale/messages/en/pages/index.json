@@ -382,13 +382,6 @@
             "url": "/text-to-video",
             "target": "_self",
             "icon": "Zap"
-          },
-          {
-            "title": "Visit ai-seedance2.art",
-            "url": "https://ai-seedance2.art",
-            "target": "_blank",
-            "variant": "outline",
-            "icon": "RiExternalLinkLine"
           }
         ],
         "className": "bg-muted"

@@ -95,8 +95,57 @@ export async function POST(request: Request) {
       | { taskId: string; taskStatus: AITaskStatus; provider: string }
       | undefined;
 
-    // Try Replicate first
-    if (process.env.REPLICATE_API_TOKEN) {
+    // Try Seedance 1.5 Pro first (via Evolink) - more widely available
+    if (process.env.EVOLINK_API_KEY) {
+      try {
+        const apiResult =
+          type === 'text-to-video'
+            ? await evolinkAPI.seedanceTextToVideo({
+                prompt,
+                aspectRatio,
+                quality,
+                duration,
+                generateAudio: true,
+                callbackUrl,
+              })
+            : await evolinkAPI.seedanceImageToVideo({
+                prompt: prompt || 'Animate this image',
+                imageUrls: [imageUrl],
+                aspectRatio,
+                quality,
+                duration,
+                generateAudio: true,
+                callbackUrl,
+              });
+
+        if (
+          apiResult.status === 'failed' ||
+          apiResult.status === 'cancelled'
+        ) {
+          let failureDetail = '';
+          try {
+            const statusResult = await evolinkAPI.getTaskStatus(apiResult.id);
+            const errorMessage =
+              statusResult.error?.message || statusResult.error?.code || '';
+            if (errorMessage) failureDetail = `: ${errorMessage}`;
+          } catch {
+            // Ignore status fetch failures; use a generic message.
+          }
+          throw new Error(`Seedance task failed on create${failureDetail}`);
+        }
+
+        result = {
+          taskId: apiResult.id,
+          taskStatus: apiResult.status as AITaskStatus,
+          provider: 'evolink',
+        };
+      } catch (error) {
+        errors.push(`evolink: ${buildErrorMessage(error)}`);
+      }
+    }
+
+    // Fallback to Replicate
+    if (!result && process.env.REPLICATE_API_TOKEN) {
       try {
         const apiResult =
           type === 'text-to-video'
@@ -121,59 +170,6 @@ export async function POST(request: Request) {
       }
     }
 
-    // Fallback to Evolink
-    if (!result && process.env.EVOLINK_API_KEY) {
-      try {
-        const apiResult =
-          type === 'text-to-video'
-            ? await evolinkAPI.textToVideo({
-                prompt,
-                aspectRatio,
-                quality,
-                duration,
-                promptExtend,
-                shotType,
-                audioUrl,
-                callbackUrl,
-              })
-            : await evolinkAPI.imageToVideo({
-                imageUrl,
-                prompt,
-                aspectRatio,
-                quality,
-                duration,
-                promptExtend,
-                shotType,
-                audioUrl,
-                callbackUrl,
-              });
-
-        if (
-          apiResult.status === 'failed' ||
-          apiResult.status === 'cancelled'
-        ) {
-          let failureDetail = '';
-          try {
-            const statusResult = await evolinkAPI.getTaskStatus(apiResult.id);
-            const errorMessage =
-              statusResult.error?.message || statusResult.error?.code || '';
-            if (errorMessage) failureDetail = `: ${errorMessage}`;
-          } catch {
-            // Ignore status fetch failures; use a generic message.
-          }
-          throw new Error(`Evolink task failed on create${failureDetail}`);
-        }
-
-        result = {
-          taskId: apiResult.id,
-          taskStatus: apiResult.status as AITaskStatus,
-          provider: 'evolink',
-        };
-      } catch (error) {
-        errors.push(`evolink: ${buildErrorMessage(error)}`);
-      }
-    }
-
     // No provider succeeded
     if (!result) {
       return respErr(
@@ -190,16 +186,14 @@ export async function POST(request: Request) {
       userId,
       mediaType: AIMediaType.VIDEO,
       provider: result.provider,
-      model: type === 'text-to-video' ? 'wan-2.5-t2v' : 'wan-2.5-i2v',
+      model: 'seedance-1.5-pro',
       prompt: prompt || (imageUrl ? `Image to video: ${imageUrl}` : ''),
       scene: type,
       options: JSON.stringify({
         aspectRatio,
         quality,
         duration,
-        promptExtend,
-        shotType,
-        audioUrl,
+        generateAudio: true,
         imageUrl,
       }),
       status: result.taskStatus,

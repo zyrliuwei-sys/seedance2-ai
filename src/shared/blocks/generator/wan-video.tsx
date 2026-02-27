@@ -326,7 +326,7 @@ export function WanVideoGenerator({ open, onOpenChange }: VideoGeneratorProps) {
             AI Video Generator
           </DialogTitle>
           <DialogDescription className="text-white/60">
-            Create stunning videos with Wan 2.6 AI technology
+            Create stunning videos with Seedance AI technology
           </DialogDescription>
         </DialogHeader>
 
@@ -699,7 +699,6 @@ export function WanVideoGeneratorInline({
           quantity={20}
           ease={80}
           color="#d9e4ff"
-          refresh
         />
       </div>
 

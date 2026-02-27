@@ -3,16 +3,24 @@
  * Models:
  * - Wan 2.6: https://evolink.ai/wan-2-6
  * - Seedance 1.5 Pro: https://evolink.ai/seedance-1-5-pro
+ * - Seedance 2.0: https://evolink.ai/seedance-2-0
+ *
+ * Seedance 2.0 Features:
+ * - Text-to-video, image-to-video, video-to-video editing
+ * - @-reference system for multimodal inputs
+ * - Up to 9 images, 3 videos, 3 audio tracks per request
+ * - Duration: 4-15 seconds
+ * - Generated video links valid for 24 hours
  */
 
 interface EvolinkVideoGenerationRequest {
-  model: 'wan2.6-text-to-video' | 'wan2.6-image-to-video' | 'seedance-1.5-pro';
+  model: 'wan2.6-text-to-video' | 'wan2.6-image-to-video' | 'seedance-1.5-pro' | 'seedance-2.0';
   prompt: string;
 
   // Common parameters
   aspect_ratio?: '16:9' | '9:16' | '1:1' | '4:3' | '3:4' | '21:9' | 'adaptive';
   quality?: '480p' | '720p' | '1080p';
-  duration?: number; // 4-12 for seedance-1.5-pro, 5/10/15 for wan2.6
+  duration?: number; // 4-15 for seedance-2.0, 4-12 for seedance-1.5-pro, 5/10/15 for wan2.6
   callback_url?: string;
 
   // Wan 2.6 specific
@@ -24,8 +32,12 @@ interface EvolinkVideoGenerationRequest {
   image_url?: string; // For wan2.6 image-to-video
 
   // Seedance 1.5 Pro specific
-  image_urls?: string[]; // Array of 1-2 images for seedance-1.5-pro
   generate_audio?: boolean;
+
+  // Seedance 2.0 specific - Multimodal inputs for @-reference system
+  image_urls?: string[]; // Up to 9 images for seedance-2.0 (was 1-2 for 1.5-pro)
+  video_urls?: string[]; // Up to 3 videos for video-to-video editing
+  audio_urls?: string[]; // Up to 3 audio tracks for audio-driven generation
 }
 
 interface EvolinkVideoGenerationResponse {
@@ -38,6 +50,7 @@ interface EvolinkVideoGenerationResponse {
   task_info: {
     can_cancel: boolean;
     estimated_time: number;
+    video_duration?: number; // Available for Seedance 2.0
   };
   type: 'video';
   usage: {
@@ -430,6 +443,98 @@ class EvolinkAPI {
       aspect_ratio: params.aspectRatio || '16:9',
       generate_audio: params.generateAudio !== false,
       callback_url: params.callbackUrl,
+    });
+  }
+
+  /**
+   * Seedance 2.0 - Text to Video
+   * Supports @-reference system with images, videos, and audio
+   * Example prompt: '@Image1 as first frame, a cinematic drone shot over a coastal city at golden hour'
+   */
+  async seedance2TextToVideo(params: {
+    prompt: string; // Use @Image1, @Image2... for images, @Video1 for videos, @Audio1 for audio
+    duration?: number; // 4-15 seconds
+    quality?: '480p' | '720p' | '1080p';
+    aspectRatio?: '16:9' | '9:16' | '1:1' | '4:3' | '3:4' | '21:9' | 'adaptive';
+    generateAudio?: boolean;
+    callbackUrl?: string;
+    // Optional multimodal references for @-reference system
+    imageUrls?: string[]; // Up to 9 images (@Image1, @Image2...)
+    videoUrls?: string[]; // Up to 3 videos (@Video1, @Video2...)
+    audioUrls?: string[]; // Up to 3 audio tracks (@Audio1, @Audio2...)
+  }): Promise<EvolinkVideoGenerationResponse> {
+    return this.createVideoGeneration({
+      model: 'seedance-2.0',
+      prompt: params.prompt,
+      duration: params.duration || 5,
+      quality: params.quality || '720p',
+      aspect_ratio: params.aspectRatio || '16:9',
+      generate_audio: params.generateAudio !== false,
+      callback_url: params.callbackUrl,
+      image_urls: params.imageUrls,
+      video_urls: params.videoUrls,
+      audio_urls: params.audioUrls,
+    });
+  }
+
+  /**
+   * Seedance 2.0 - Image to Video
+   * Converts images to video with optional @-reference system
+   */
+  async seedance2ImageToVideo(params: {
+    prompt: string;
+    imageUrls: string[]; // 1-9 images
+    duration?: number; // 4-15 seconds
+    quality?: '480p' | '720p' | '1080p';
+    aspectRatio?: '16:9' | '9:16' | '1:1' | '4:3' | '3:4' | '21:9' | 'adaptive';
+    generateAudio?: boolean;
+    callbackUrl?: string;
+    // Optional additional references
+    videoUrls?: string[]; // Up to 3 videos for camera movement reference
+    audioUrls?: string[]; // Up to 3 audio tracks
+  }): Promise<EvolinkVideoGenerationResponse> {
+    return this.createVideoGeneration({
+      model: 'seedance-2.0',
+      prompt: params.prompt,
+      image_urls: params.imageUrls,
+      duration: params.duration || 5,
+      quality: params.quality || '720p',
+      aspect_ratio: params.aspectRatio || 'adaptive',
+      generate_audio: params.generateAudio !== false,
+      callback_url: params.callbackUrl,
+      video_urls: params.videoUrls,
+      audio_urls: params.audioUrls,
+    });
+  }
+
+  /**
+   * Seedance 2.0 - Video to Video
+   * Edit existing videos with @-reference system
+   * Example prompt: 'Replicate @Video1 camera movement, change style to cyberpunk'
+   */
+  async seedance2VideoToVideo(params: {
+    prompt: string;
+    videoUrls: string[]; // 1-3 videos (total duration 2-15s)
+    duration?: number; // 4-15 seconds
+    quality?: '480p' | '720p' | '1080p';
+    aspectRatio?: '16:9' | '9:16' | '1:1' | '4:3' | '3:4' | '21:9';
+    generateAudio?: boolean;
+    callbackUrl?: string;
+    // Optional additional references
+    imageUrls?: string[]; // Up to 9 images
+    audioUrls?: string[]; // Up to 3 audio tracks
+  }): Promise<EvolinkVideoGenerationResponse> {
+    return this.createVideoGeneration({
+      model: 'seedance-2.0',
+      prompt: params.prompt,
+      video_urls: params.videoUrls,
+      duration: params.duration || 5,
+      quality: params.quality || '720p',
+      aspect_ratio: params.aspectRatio || '16:9',
+      generate_audio: params.generateAudio !== false,
+      callback_url: params.callbackUrl,
+      image_urls: params.imageUrls,
+      audio_urls: params.audioUrls,
     });
   }
 }
